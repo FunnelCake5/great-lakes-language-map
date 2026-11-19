@@ -24,7 +24,8 @@ html, body {
 
 #app {
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr auto auto;
+  grid-template-columns: minmax(0, 1fr);
   height: 100vh;
   height: 100dvh;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
@@ -117,3 +118,191 @@ html, body {
   color: var(--sepia-light);
 }
 .colophon a { color: inherit; }
+
+/* ---------- Year readout (on the map) ---------- */
+.readout {
+  position: absolute;
+  top: 10px;
+  left: 18px;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  font-family: var(--serif);
+  color: var(--sepia);
+}
+.readout-line { display: flex; align-items: baseline; gap: 6px; }
+.readout-year {
+  font-size: clamp(34px, 5vw, 56px);
+  line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: 0.02em;
+}
+.readout-era { font-variant: small-caps; letter-spacing: 0.12em; font-size: 16px; color: var(--sepia-light); }
+.readout-chapter { margin-top: 4px; font-style: italic; font-size: 14px; color: var(--sepia-light); min-height: 1.2em; }
+
+/* ---------- Timebar ---------- */
+.timebar {
+  padding: 4px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.tb-chapters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 2px 0;
+  -webkit-overflow-scrolling: touch;
+}
+.tb-chapters::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  border: 1px solid rgba(92, 70, 49, 0.45);
+  border-radius: 22px;
+  background: var(--paper);
+  color: var(--sepia);
+  font: 14px var(--serif);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.chip-plate { font-variant: small-caps; letter-spacing: 0.08em; font-weight: 600; }
+.chip-title { font-style: italic; }
+.chip-years { color: var(--sepia-light); font-variant-numeric: oldstyle-nums; }
+.chip.active { background: var(--sepia); color: var(--paper); border-color: var(--sepia); }
+.chip.active .chip-years { color: rgba(242, 235, 221, 0.75); }
+/* Placeholder = needs data: dashed, never presented as settled (rule 4). */
+.chip.placeholder {
+  border-style: dashed;
+  background: transparent;
+  color: var(--sepia-light);
+  cursor: default;
+}
+
+.tb-row { display: flex; align-items: center; gap: 14px; }
+.tb-group { display: flex; align-items: center; gap: 4px; flex: none; }
+
+.tb-btn {
+  min-width: 44px;
+  height: 44px;
+  padding: 0 10px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(92, 70, 49, 0.35);
+  border-radius: 22px;
+  background: var(--paper);
+  color: var(--sepia);
+  font: 600 15px var(--sans);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.tb-btn svg { width: 22px; height: 22px; fill: currentColor; }
+.tb-btn:active { transform: scale(0.96); }
+.tb-btn:disabled { opacity: 0.35; cursor: default; }
+.tb-play { width: 52px; height: 52px; border-radius: 26px; background: var(--sepia); color: var(--paper); border-color: var(--sepia); }
+.tb-play svg { width: 26px; height: 26px; }
+.tb-speed { font-variant-numeric: tabular-nums; min-width: 52px; }
+.tb-today { flex: none; padding: 0 18px; font-family: var(--serif); font-variant: small-caps; letter-spacing: 0.08em; font-size: 16px; }
+.tb-today.active { background: var(--sepia); color: var(--paper); border-color: var(--sepia); }
+.tb-btn:focus-visible, .chip:focus-visible, .tb-slider:focus-visible { outline: 2px solid #378ADD; outline-offset: 2px; }
+
+/* Slider: a tall touch area with a thin engraved track inside it. */
+.tb-slider {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 64px;
+  touch-action: none;
+  cursor: pointer;
+  outline: none;
+}
+.tb-track {
+  position: absolute;
+  left: 0; right: 0;
+  top: 26px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--paper);
+  box-shadow: inset 0 0 0 1px rgba(92, 70, 49, 0.45);
+  overflow: hidden;
+}
+.tb-zone { position: absolute; top: 0; bottom: 0; border-right: 1px solid rgba(92, 70, 49, 0.35); }
+.tb-zone:nth-child(2) { background: rgba(110, 138, 153, 0.12); }
+.tb-fill { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(92, 70, 49, 0.28); }
+
+.tb-marks { position: absolute; left: 0; right: 0; top: 36px; height: 8px; pointer-events: none; }
+.tb-event {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 7px;
+  margin-left: -1px;
+  background: var(--c);
+  border-radius: 1px;
+}
+.tb-event.conf-low { opacity: 0.45; }
+.tb-event.conf-contested { opacity: 0.5; background: repeating-linear-gradient(var(--c) 0 2px, transparent 2px 3px); }
+
+.tb-bands { position: absolute; left: 0; right: 0; top: 4px; height: 18px; pointer-events: none; }
+.tb-band {
+  position: absolute;
+  top: 6px;
+  height: 10px;
+  border: 1px solid rgba(92, 70, 49, 0.5);
+  border-bottom: none;
+  font: italic 10px var(--serif);
+  color: var(--sepia-light);
+  text-align: center;
+  line-height: 0;
+}
+.tb-band::before { content: ''; }
+
+.tb-axis { position: absolute; left: 0; right: 0; top: 46px; height: 18px; pointer-events: none; }
+.tb-tick { position: absolute; top: 0; width: 1px; height: 3px; background: rgba(92, 70, 49, 0.4); }
+.tb-tick.major { height: 5px; background: rgba(92, 70, 49, 0.7); }
+.tb-tick-label {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  transform: translateX(-50%);
+  font: 11px var(--serif);
+  color: var(--sepia-light);
+  font-variant-numeric: oldstyle-nums;
+  white-space: nowrap;
+}
+.tb-tick:first-child .tb-tick-label { transform: none; }
+.tb-tick:last-child .tb-tick-label { transform: translateX(-100%); }
+
+.tb-thumb {
+  position: absolute;
+  top: 30px;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--sepia);
+  box-shadow: 0 1px 3px rgba(60, 40, 20, 0.3);
+  pointer-events: none;
+  transition: transform 0.12s;
+}
+.tb-slider.dragging .tb-thumb { transform: scale(1.25); }
+.tb-slider.is-today .tb-thumb { opacity: 0.35; }
+.tb-slider.is-today .tb-fill { opacity: 0.4; }
+
+@media (max-width: 700px) {
+  .timebar { padding: 4px 12px 0; }
+  .tb-row { flex-wrap: wrap; gap: 8px; }
+  .tb-slider { order: -1; flex-basis: 100%; }
+  .tb-group { flex: 1; }
+}

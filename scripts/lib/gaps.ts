@@ -41,6 +41,10 @@ export function renderGaps(d: Dataset, existing: string): string {
     ...d.events.filter((e) => weakKeys.has(e.source)).map((e) => `- event \`${e.id}\`: ${e.title}`),
   ];
 
+  const chapters: string[] = d.chapters
+    .filter((c) => c.status === 'placeholder')
+    .map((c) => `- chapter \`${c.id}\` (Plate ${c.plate}): title and years not yet supplied`);
+
   const i = existing.indexOf(MANUAL_HEADING);
   const manual = i >= 0 ? existing.slice(i).trimEnd() : `${MANUAL_HEADING}\n`;
   const list = (xs: string[]) => (xs.length ? xs.join('\n') : '_None._');
@@ -54,6 +58,9 @@ ${list(contested)}
 
 ## Weak-source placeholders (Sultzman)
 ${list(weak)}
+
+## Chapter placeholders
+${list(chapters)}
 
 ${manual}
 `;

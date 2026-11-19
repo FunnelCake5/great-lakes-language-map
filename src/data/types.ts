@@ -85,10 +85,24 @@ export interface PlaceName {
 }
 export interface PlaceNamesFile { placenames: PlaceName[] }
 
+/** A named stop on the timeline (SPEC § Time › Chapters). */
+export interface Chapter {
+  id: string;
+  plate: number;
+  /** null while the chapter is a placeholder awaiting data. */
+  title: string | null;
+  year_start: number | null;
+  year_end: number | null;
+  status: 'defined' | 'placeholder';
+  note?: string;
+}
+export interface ChaptersFile { chapters: Chapter[] }
+
 export interface Dataset {
   sources: Record<string, Source>;
   languages: Language[];
   nations: Nation[];
   events: HistEvent[];
   placenames: PlaceName[];
+  chapters: Chapter[];
 }
