@@ -1,0 +1,95 @@
+{
+ "placenames": [
+  {
+   "name": "Chicago",
+   "lat": 41.88,
+   "lon": -87.63,
+   "language": "miami-illinois",
+   "meaning": "wild leek / onion",
+   "confidence": "high",
+   "source": "mccafferty_mo"
+  },
+  {
+   "name": "Illinois",
+   "lat": 40.0,
+   "lon": -89.2,
+   "language": "miami-illinois",
+   "meaning": "ethnonym",
+   "confidence": "high",
+   "source": "mccafferty_mo"
+  },
+  {
+   "name": "Wabash",
+   "lat": 39.5,
+   "lon": -87.5,
+   "language": "miami-illinois",
+   "meaning": "",
+   "confidence": "high",
+   "source": "mccafferty_mo"
+  },
+  {
+   "name": "Kankakee",
+   "lat": 41.12,
+   "lon": -87.86,
+   "language": "miami-illinois",
+   "meaning": "",
+   "confidence": "high",
+   "source": "mccafferty_mo"
+  },
+  {
+   "name": "Mississippi",
+   "lat": 42.0,
+   "lon": -90.9,
+   "language": "miami-illinois",
+   "meaning": "big river",
+   "confidence": "high",
+   "source": "mccafferty_mo"
+  },
+  {
+   "name": "Missouri",
+   "lat": 38.6,
+   "lon": -91.5,
+   "language": "miami-illinois",
+   "meaning": "'one who has a (dugout) canoe' — Algonquian name for a Siouan people",
+   "confidence": "high",
+   "source": "mccafferty_mo"
+  },
+  {
+   "name": "Wisconsin",
+   "lat": 43.6,
+   "lon": -89.8,
+   "language": "miami-illinois",
+   "meaning": "'it lies red' (red sandstone)",
+   "confidence": "med",
+   "source": "mccafferty_wi",
+   "note": "Ojibwe or Menominee origins also proposed"
+  },
+  {
+   "name": "Michigan",
+   "lat": 44.3,
+   "lon": -85.6,
+   "language": "ojibwe",
+   "meaning": "great water",
+   "confidence": "med",
+   "source": "needs_source"
+  },
+  {
+   "name": "Minnesota",
+   "lat": 45.0,
+   "lon": -93.5,
+   "language": "dakota",
+   "meaning": "clear/cloudy-sky water",
+   "confidence": "med",
+   "source": "needs_source"
+  },
+  {
+   "name": "Iowa",
+   "lat": 42.0,
+   "lon": -93.5,
+   "language": "chiwere",
+   "meaning": "from the Ioway ethnonym",
+   "confidence": "med",
+   "source": "needs_source"
+  }
+ ]
+}

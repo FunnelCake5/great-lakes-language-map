@@ -1,0 +1,119 @@
+{
+ "sources": {
+  "tanner1987": {
+   "cite": "Tanner, H.H. (ed.), Atlas of Great Lakes Indian History. Univ. of Oklahoma Press, 1987. 33 maps, c.1640–1871.",
+   "url": "https://cahokiamounds.org/product/atlas-of-great-lakes-indian-history/",
+   "tier": "primary-synthesis"
+  },
+  "benson2009": {
+   "cite": "Benson, Pauketat & Cook, 'Cahokia's Boom and Bust in the Context of Climate Change', American Antiquity.",
+   "url": "https://www.cambridge.org/core/product/450C4880F8F28C35181AFBF94A075B38",
+   "tier": "peer-reviewed"
+  },
+  "oneota_war": {
+   "cite": "Chapter on Oneota warfare and Cahokia, Univ. Press of Colorado (DOI 10.5876/9781607326700-010).",
+   "url": "https://www.degruyterbrill.com/document/doi/10.5876/9781607326700-010/pdf",
+   "tier": "peer-reviewed"
+  },
+  "cobb2002": {
+   "cite": "Cobb & Butler, 'The Vacant Quarter Revisited', American Antiquity 67(4), 2002.",
+   "url": "https://doi.org/10.2307/1593795",
+   "tier": "peer-reviewed"
+  },
+  "bird2017": {
+   "cite": "Bird et al., 'Midcontinental Native American population dynamics and late Holocene hydroclimate extremes', Scientific Reports 7:41628, 2017.",
+   "url": "https://doi.org/10.1038/srep41628",
+   "tier": "peer-reviewed"
+  },
+  "si_oneota": {
+   "cite": "Smithsonian MCI summary: Oneota village chronology and Neo-Boreal maize failure after 1400, peak cold c.1550 (La Crosse).",
+   "url": "https://mci.si.edu/node/1251322",
+   "tier": "summary"
+  },
+  "campbell_lia": {
+   "cite": "Campbell & Campbell, 'The Little Ice Age and Neutral Faunal Assemblages', Ontario Archaeology 49.",
+   "url": "https://ontarioarchaeology.wildapricot.org/Resources/Publications/oa49-2-campbell.pdf",
+   "tier": "peer-reviewed"
+  },
+  "stothers_ih": {
+   "cite": "Stothers, 'Indian Hills (33WO4): A Protohistoric Assistaeronon Village in the Maumee River Valley', Ontario Archaeology 36.",
+   "url": "https://ontarioarchaeology.wildapricot.org/Resources/Publications/oa36-2-stothers.pdf",
+   "tier": "peer-reviewed"
+  },
+  "stothers_fm": {
+   "cite": "Stothers, 'The Fort Meigs Phase of the Sandusky Tradition', Ontario Archaeology 67, 1999.",
+   "url": "https://ontarioarchaeology.wildapricot.org/Resources/Publications/oa67-1-stothers.pdf",
+   "tier": "peer-reviewed"
+  },
+  "schwerdt": {
+   "cite": "Schwerdt site / Berrien phase (after Bettarel & Smith 1973, The Moccasin Bluff Site).",
+   "url": "https://en.wikipedia.com/wiki/Schwerdt_site",
+   "tier": "summary"
+  },
+  "isas_huber": {
+   "cite": "Illinois State Archaeological Survey, 'Huber, Palos, and the colonial Illinois Country' (Palos = ancestral Ho-Chunk).",
+   "url": "https://isas.illinois.edu/research_2/huber_palos_and_the_colonial_illinois_country",
+   "tier": "institutional"
+  },
+  "mcja_huber": {
+   "cite": "Huber type site (11CK1), Midcontinental Journal of Archaeology 49(1), 2024: 1450–1650 CE, early European trade goods.",
+   "url": "https://searchworks.jioinstitute.edu.in/articles/asx__178584614",
+   "tier": "peer-reviewed"
+  },
+  "rankin_dhegiha": {
+   "cite": "Rankin, Siouan list post on Dhegiha prehistory (sympathetic to Ohio Valley origin; contested).",
+   "url": "https://listserv.linguistlist.org/pipermail/siouan/2002-January/001673.html",
+   "tier": "expert-informal"
+  },
+  "fortancient": {
+   "cite": "Fort Ancient culture overview; Madisonville site (indirect European goods).",
+   "url": "https://www.wikipedia.org/wiki/Fort_Ancient",
+   "tier": "summary"
+  },
+  "amanth22": {
+   "cite": "American Anthropologist n.s. vol. 22: Neutral war parties return with Mascouten prisoners in 1638 and 1643.",
+   "url": "https://kwx.liehendr.com/content/wikisource_en_all_maxi_2022-09/A/Page%3AAmerican_Anthropologist_NS_vol._22.djvu/306",
+   "tier": "historical-scholarship"
+  },
+  "canenc_neutral": {
+   "cite": "Canadian Encyclopedia, 'Neutral' (1643: 800 Mascouten prisoners).",
+   "url": "https://thecanadianencyclopedia.ca/index.php/en/article/neutral",
+   "tier": "summary"
+  },
+  "mccafferty_mo": {
+   "cite": "McCafferty, 'On the Birthday and Etymology of the Placename Missouri', Names 51(2), 2003.",
+   "url": "https://ans-names.pitt.edu/ans/article/download/1687/1686",
+   "tier": "peer-reviewed"
+  },
+  "mccafferty_wi": {
+   "cite": "McCafferty, 'On Wisconsin', Onoma 38, 2003 (via Wisconsin Historical Society).",
+   "url": "https://wisconsinhistory.org/Records/Article/CS3663",
+   "tier": "peer-reviewed"
+  },
+  "goddard_alg": {
+   "cite": "Goddard 1994 model of Algonquian subgrouping (west-to-east spread).",
+   "url": "https://en.wikipedia.org/wiki/Algonquian_languages",
+   "tier": "summary"
+  },
+  "ovs": {
+   "cite": "Ohio Valley (Southeastern) Siouan: Tutelo, Ofo, Biloxi.",
+   "url": "https://en.wikipedia.org/wiki/Ohio_Valley_Siouan_languages",
+   "tier": "summary"
+  },
+  "sultzman": {
+   "cite": "Sultzman, L., 'Mascouten History' (web, c.1990s). SECONDARY, UNCITED; contains known errors. Use only where flagged.",
+   "url": "",
+   "tier": "secondary-weak"
+  },
+  "royce1899": {
+   "cite": "Royce, C.C., Indian Land Cessions in the United States (18th Annual Report BAE, 1899).",
+   "url": "https://www.loc.gov/item/13023487/",
+   "tier": "primary-synthesis"
+  },
+  "needs_source": {
+   "cite": "STANDARD HISTORICAL FACT — source still to be attached. Do not ship without one.",
+   "url": "",
+   "tier": "todo"
+  }
+ }
+}
