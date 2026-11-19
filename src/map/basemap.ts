@@ -235,3 +235,19 @@ export function drawBasemap(
   ctx.lineWidth = 0.9;
   ctx.stroke();
 }
+
+/**
+ * Adds land-minus-lakes, inside the plate, as subpaths for an even-odd clip.
+ * Land has no lake holes, so land + lakes (+ islands as lake holes) under
+ * even-odd gives dry land only.
+ */
+export function landClip(ctx: CanvasRenderingContext2D, projection: GeoProjection, map: Basemap) {
+  const path = geoPath(projection, ctx);
+  ctx.beginPath();
+  path(PLATE);
+  ctx.clip();
+  ctx.beginPath();
+  for (const f of map.land.features) path(f);
+  for (const f of map.lakes.features) path(f);
+  ctx.clip('evenodd');
+}
