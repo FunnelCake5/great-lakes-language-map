@@ -95,6 +95,16 @@ export interface Chapter {
   year_end: number | null;
   status: 'defined' | 'placeholder';
   note?: string;
+  /** Optional narration track for this chapter (SPEC § Roadmap 8). */
+  narration?: Narration;
+}
+export interface Narration {
+  /** File in public/audio/, e.g. "plate-0.mp3". */
+  file: string;
+  /** Who recorded it / rights. */
+  credit: string;
+  /** Text of the narration, shown for accessibility. */
+  transcript?: string;
 }
 export interface ChaptersFile { chapters: Chapter[] }
 

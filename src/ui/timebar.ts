@@ -162,7 +162,7 @@ export function mountTimebar(root: HTMLElement, readout: HTMLElement, clock: Clo
   const chips = chapters.map((c) => {
     const defined = c.status === 'defined' && c.year_start !== null;
     const label = defined
-      ? [h('span', { class: 'chip-plate' }, `Plate ${c.plate}`), h('span', { class: 'chip-title' }, c.title ?? ''), h('span', { class: 'chip-years' }, `${c.year_start}–${c.year_end}`)]
+      ? [h('span', { class: 'chip-plate' }, `Plate ${c.plate}`), h('span', { class: 'chip-title' }, c.title ?? ''), h('span', { class: 'chip-years' }, `${c.year_start}–${c.year_end}`), ...(c.narration ? [h('span', { class: 'chip-audio', 'aria-label': 'has narration' }, '♪')] : [])]
       : [h('span', { class: 'chip-plate' }, `Plate ${c.plate}`), h('span', { class: 'chip-title' }, 'awaiting data')];
     const chip = h('button', {
       type: 'button',

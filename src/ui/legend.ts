@@ -55,6 +55,10 @@ export function legendContent(opts: { fields: boolean; onFields: (on: boolean) =
     }
     return b;
   });
+  // Stay in step when something else switches a layer (e.g. a data-gaps jump).
+  opts.layers.subscribe(() => LAYERS.forEach((l, i) => {
+    if (!l.placeholder) layerButtons[i].setAttribute('aria-pressed', String(opts.layers.isOn(l.id)));
+  }));
   const layersEl = h('div', { class: 'key-layers' }, h('h3', { class: 'key-sub' }, 'Layers'), h('div', { class: 'layer-grid' }, ...layerButtons));
 
   const toggle = h('button', { type: 'button', class: 'key-toggle', 'aria-pressed': String(opts.fields) });

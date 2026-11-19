@@ -1,67 +1,20 @@
-import type { Dataset, Position } from '../../src/data/types';
-import { NEEDS_SOURCE } from '../../src/data/types';
-
-const MANUAL_HEADING = '## Other known gaps';
+import type { Dataset } from '../../src/data/types';
+import { MANUAL_HEADING, collectGaps } from '../../src/data/gaps';
 
 const HEADER = `# Data gaps
 
-Items that need a source (\`needs_source\`) or are disputed (\`contested\`). Fix them by adding a source to \`sources.json\` and updating the record.
+Items that need a source (\`needs_source\`) or are disputed (\`contested\`). Fix them by adding a source to \`sources.json\` and updating the record. The app's "Data gaps" panel shows the same list.
 `;
-
-const posLine = (id: string, p: Position) =>
-  `- nation \`${id}\` @ ${p.year}${p.note ? `: ${p.note}` : ''}`;
 
 /**
- * Build GAPS.md. The generated sections come from the data; everything from
- * "## Other known gaps" onward is hand-written and preserved verbatim.
+ * Build GAPS.md. The generated sections come from src/data/gaps.ts (shared
+ * with the in-app panel); everything from "## Other known gaps" onward is
+ * hand-written and preserved verbatim.
  */
 export function renderGaps(d: Dataset, existing: string): string {
-  const weakKeys = new Set(
-    Object.entries(d.sources).filter(([, s]) => s.tier === 'secondary-weak').map(([k]) => k),
-  );
-  const allPositions = (n: Dataset['nations'][number]) => [...n.positions, ...(n.alt_positions ?? [])];
-
-  const needs: string[] = [
-    ...d.events.filter((e) => e.source === NEEDS_SOURCE).map((e) => `- event \`${e.id}\`: ${e.title}`),
-    ...d.nations.flatMap((n) => allPositions(n).filter((p) => p.source === NEEDS_SOURCE).map((p) => posLine(n.id, p))),
-    ...d.placenames.filter((p) => p.source === NEEDS_SOURCE).map((p) => `- placename \`${p.name}\``),
-  ];
-
-  const contested: string[] = [
-    ...d.events.filter((e) => e.confidence === 'contested').map((e) => `- event \`${e.id}\`: ${e.title}`),
-    ...d.nations.flatMap((n) => allPositions(n).filter((p) => p.confidence === 'contested').map((p) => posLine(n.id, p))),
-    ...d.placenames.filter((p) => p.confidence === 'contested').map((p) => `- placename \`${p.name}\``),
-  ];
-
-  const weak: string[] = [
-    ...d.nations.flatMap((n) => {
-      const c = allPositions(n).filter((p) => weakKeys.has(p.source)).length;
-      return c ? [`- nation \`${n.id}\`: ${c} position${c === 1 ? '' : 's'}`] : [];
-    }),
-    ...d.events.filter((e) => weakKeys.has(e.source)).map((e) => `- event \`${e.id}\`: ${e.title}`),
-  ];
-
-  const chapters: string[] = d.chapters
-    .filter((c) => c.status === 'placeholder')
-    .map((c) => `- chapter \`${c.id}\` (Plate ${c.plate}): title and years not yet supplied`);
-
   const i = existing.indexOf(MANUAL_HEADING);
   const manual = i >= 0 ? existing.slice(i).trimEnd() : `${MANUAL_HEADING}\n`;
-  const list = (xs: string[]) => (xs.length ? xs.join('\n') : '_None._');
-
-  return `${HEADER}
-## Needs source
-${list(needs)}
-
-## Contested
-${list(contested)}
-
-## Weak-source placeholders (Sultzman)
-${list(weak)}
-
-## Chapter placeholders
-${list(chapters)}
-
-${manual}
-`;
+  const sections = collectGaps(d).map((s) =>
+    `## ${s.title}\n${s.items.length ? s.items.map((it) => `- ${it.text}`).join('\n') : '_None._'}`);
+  return `${HEADER}\n${sections.join('\n\n')}\n\n${manual}\n`;
 }

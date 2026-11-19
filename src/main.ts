@@ -12,6 +12,11 @@ import { mountPanel } from './ui/panel';
 import { mountTree, nationsUnder } from './ui/tree';
 import { Palette } from './data/palette';
 import { TodayLayer } from './today/layer';
+import { collectGaps, manualGaps } from './data/gaps';
+import type { GapItem } from './data/gaps';
+import { gapCount, gapsContent } from './ui/gaps';
+import { LAYERS } from './drivers/groups';
+import gapsMd from '../data/GAPS.md?raw';
 import { makeProjection } from './map/projection';
 import { NationLayer } from './nations/layer';
 import { Tracks } from './nations/track';
@@ -22,6 +27,7 @@ import { LayerState } from './drivers/groups';
 import { EventLayer } from './drivers/events';
 import { DriverOverlays } from './drivers/overlays';
 import { mountTimebar } from './ui/timebar';
+import { mountNarration } from './ui/narration';
 
 const container = document.getElementById('map') as HTMLDivElement;
 const baseCanvas = document.getElementById('basemap') as HTMLCanvasElement;
@@ -56,16 +62,45 @@ let projection: GeoProjection | null = null;
 let basemap: Basemap | null = null;
 let size = { width: 0, height: 0, dpr: 1 };
 
+const gapSections = collectGaps(dataset);
+
 function summarise() {
-  const { nations: ns, events, placenames, sources } = dataset;
-  const records = [
-    ...events,
-    ...placenames,
-    ...ns.flatMap((n) => [...n.positions, ...(n.alt_positions ?? [])]),
-  ];
-  const gaps = records.filter((r) => r.source === NEEDS_SOURCE || r.confidence === 'contested').length;
+  const { nations: ns, events, sources } = dataset;
   counts.textContent =
-    `${ns.length} nations · ${events.length} events · ${Object.keys(sources).length - 1} sources · ${gaps} data gaps`;
+    `${ns.length} nations · ${events.length} events · ${Object.keys(sources).filter((k) => k !== NEEDS_SOURCE).length} sources · ${gapCount(gapSections)} data gaps`;
+}
+
+/** Jump from a data-gaps entry to the item on the map. */
+function goToGap(item: GapItem) {
+  clock.pause();
+  if (item.kind === 'event') {
+    const e = dataset.events.find((x) => x.id === item.ref);
+    if (!e) return;
+    const layer = LAYERS.find((l) => l.drivers.includes(e.driver));
+    if (layer && !layers.isOn(layer.id) && !layer.placeholder) layers.set(layer.id, true);
+    clock.seek(e.year_start);
+    selectEvent(e.id);
+  } else if (item.kind === 'nation') {
+    if (item.year !== undefined) clock.seek(item.year);
+    selectNation(item.ref);
+  } else if (item.kind === 'placename') {
+    const p = dataset.placenames.find((x) => x.name === item.ref);
+    if (!p) return;
+    if (!layers.isOn('placenames')) layers.set('placenames', true);
+    nations.selected = null;
+    events.selected = null;
+    if (card.languageId) focusLanguage(null);
+    clock.setToday(true);
+    today.selected = p.name;
+    card.showPlace(p, palette.colourOf(p.language));
+    renderTime();
+  } else if (item.kind === 'maize') {
+    if (!layers.isOn('climate')) layers.set('climate', true);
+    if (item.year !== undefined) clock.seek(item.year);
+    clearSelection();
+  }
+  // On narrow screens the panel covers the map: get it out of the way.
+  if (!window.matchMedia('(min-width: 1100px) and (min-aspect-ratio: 1/1)').matches) panel?.close();
 }
 
 function sizeCanvas(c: HTMLCanvasElement, dpr = size.dpr) {
@@ -83,7 +118,9 @@ function renderBase(map: Basemap) {
   basemap = map;
   const { width, height } = container.getBoundingClientRect();
   if (width < 10 || height < 10) return;
-  size = { width, height, dpr: Math.min(window.devicePixelRatio || 1, 3) };
+  // 2x is the iPad's own density; higher only costs memory and fill rate.
+  size = { width, height, dpr: Math.min(window.devicePixelRatio || 1, 2) };
+  fieldStamp = { year: NaN, at: 0 };
   const narrow = width < 600;
   events.compact = narrow;
   overlays.compact = narrow;
@@ -104,18 +141,40 @@ function renderBase(map: Basemap) {
   sizeCanvas(overlayCanvas);
   sizeCanvas(eventCanvas);
   // Fields are soft by design; 1x resolution is enough and far cheaper on iPad.
-  sizeCanvas(fieldCanvas, 1);
-  fields.resize(projection, map, width, height, 1);
+  sizeCanvas(fieldCanvas, FIELD_SCALE);
+  fields.resize(projection, map, width, height, FIELD_SCALE);
   renderTime();
 }
 
 /** Time-dependent layers: on every clock change. */
+/** Field canvas resolution relative to CSS px: the fields are soft, so half
+ * resolution is visually equivalent and a quarter of the pixels to composite. */
+const FIELD_SCALE = 0.5;
+
+/** Reduce Motion: draw pulses as still rings and skip the animation loop. */
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+/**
+ * Fields are soft by design, so during playback they are recomputed at most
+ * every 100 ms or one year (they dominate frame cost); paused, seeking or
+ * changed settings redraw at once.
+ */
+let fieldStamp = { year: NaN, at: 0 };
+let fieldsDirty = true;
+function fieldsDue(year: number, playing: boolean) {
+  if (fieldsDirty || !playing) return true;
+  const now = performance.now();
+  return now - fieldStamp.at > 100 || Math.abs(year - fieldStamp.year) > 1;
+}
+
 function renderTime() {
+  performance.mark('render-start');
   if (!projection || !basemap) return;
   const ctx = nationCanvas.getContext('2d')!;
   ctx.clearRect(0, 0, size.width, size.height);
   const fctx = fieldCanvas.getContext('2d')!;
-  fctx.clearRect(0, 0, size.width, size.height);
+  const redrawFields = fieldsDue(clock.state.year, clock.state.playing) || clock.state.mode === 'today';
+  if (redrawFields) fctx.clearRect(0, 0, size.width, size.height);
   const s = clock.state;
   const isToday = s.mode === 'today';
   // The placeholder only shows while no present-day nation is sourced.
@@ -144,11 +203,17 @@ function renderTime() {
   }
   todayGroup.replaceChildren();
   today.selected = null;
-  fields.draw(fctx, s.year);
+  if (redrawFields) {
+    fields.draw(fctx, s.year);
+    fieldStamp = { year: s.year, at: performance.now() };
+    fieldsDirty = false;
+  }
   nations.draw(ctx, projection, s.year);
   nations.drawLabels(nationLabels, size.width, size.height);
   if (nations.selected) card.show(nations.selected, s.year);
   startDrivers();
+  // Visible in Safari's Web Inspector timeline when tuning on an iPad.
+  performance.measure('render', 'render-start');
 }
 
 // ---------- drivers: overlays below the nations, event pulses above ----------
@@ -163,6 +228,7 @@ function renderDrivers(now: number) {
   if (!projection || clock.state.mode === 'today') return;
   clearDrivers();
   const y = clock.state.year;
+  if (reduceMotion.matches) now = 0; // still rings, no motion
   overlays.draw(overlayCanvas.getContext('2d')!, projection, y, now);
   overlays.drawLabels(overlayLabels);
   events.draw(eventCanvas.getContext('2d')!, projection, y, now);
@@ -176,7 +242,7 @@ function startDrivers() {
   const tick = (now: number) => {
     renderDrivers(now);
     const y = clock.state.year;
-    const moving = projection && clock.state.mode !== 'today' && (events.hasActive(projection, y) || overlays.animating(y));
+    const moving = !reduceMotion.matches && projection && clock.state.mode !== 'today' && (events.hasActive(projection, y) || overlays.animating(y));
     driverLoop = moving ? requestAnimationFrame(tick) : 0;
   };
   driverLoop = requestAnimationFrame(tick);
@@ -203,6 +269,7 @@ function focusLanguage(id: string | null) {
   const set = node ? new Set(under.map((n) => n.id)) : null;
   nations.focus = set;
   fields.focus = set;
+  fieldsDirty = true;
   tree?.setFocus(node ? node.id : null);
   if (node) {
     nations.selected = null;
@@ -292,25 +359,27 @@ async function start() {
     dataset.chapters,
   );
   syncHash(clock);
+  mountNarration(document.getElementById('narration')!, clock, dataset.chapters);
   tree = mountTree({
     languages: dataset.languages,
     nations: dataset.nations,
     lang,
     palette,
     onFocus: (id) => focusLanguage(id),
-    onLevel: (level) => { palette.level = level; renderTime(); },
+    onLevel: (level) => { palette.level = level; fieldsDirty = true; renderTime(); },
   });
   panel = mountPanel(document.getElementById('key')!, [
     {
       id: 'key',
-      label: 'Key & layers',
+      label: 'Key',
       content: legendContent({
         fields: fields.enabled,
-        onFields: (on) => { fields.enabled = on; renderTime(); },
+        onFields: (on) => { fields.enabled = on; fieldsDirty = true; renderTime(); },
         layers,
       }),
     },
     { id: 'languages', label: 'Languages', content: tree.element },
+    { id: 'gaps', label: `Gaps ${gapCount(gapSections)}`, content: gapsContent(gapSections, manualGaps(gapsMd), goToGap) },
   ]);
   layers.subscribe(() => renderTime());
   let timeFrame = 0;

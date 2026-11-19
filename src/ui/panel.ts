@@ -32,5 +32,5 @@ export function mountPanel(host: HTMLElement, tabs: Tab[]) {
   const roomy = window.matchMedia('(min-width: 1100px) and (min-aspect-ratio: 1/1)');
   set(roomy.matches ? tabs[0].id : null);
   roomy.addEventListener('change', () => set(roomy.matches ? tabs[0].id : null));
-  return { open: (id: string) => set(id) };
+  return { open: (id: string) => set(id), close: () => set(null) };
 }

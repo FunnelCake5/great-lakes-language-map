@@ -1,12 +1,12 @@
 // npm run validate — schema, referential integrity, bounds and project rules
 // (CLAUDE.md "Non-negotiable rules"). Exits non-zero on any error; CI runs it.
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   BOUNDS, CONFIDENCE, DRIVERS, LANGUAGE_LEVELS, LANGUAGE_STATUS, NEEDS_SOURCE, YEARS,
 } from '../src/data/types';
 import type { Dataset } from '../src/data/types';
-import { DATA, loadRaw } from './lib/load';
+import { DATA, ROOT, loadRaw } from './lib/load';
 import { renderGaps } from './lib/gaps';
 
 const errors: string[] = [];
@@ -253,7 +253,21 @@ const plates = new Set<number>();
 d.chapters.forEach((c: any, i) => {
   const w = `chapters[${i}]${isStr(c?.id) ? ` (${c.id})` : ''}`;
   if (!isObj(c)) return err(w, 'must be an object');
-  unknownKeys(w, c, ['id', 'plate', 'title', 'year_start', 'year_end', 'status', 'note']);
+  unknownKeys(w, c, ['id', 'plate', 'title', 'year_start', 'year_end', 'status', 'note', 'narration']);
+  if (c.narration !== undefined) {
+    const n = c.narration;
+    if (!isObj(n)) err(w, 'narration must be an object');
+    else {
+      unknownKeys(`${w}.narration`, n, ['file', 'credit', 'transcript']);
+      if (req(`${w}.narration`, n, 'file', 'string')) {
+        if (!/^[\w.-]+\.(mp3|m4a|aac|ogg|wav)$/i.test(n.file)) err(`${w}.narration`, `file "${n.file}" must be a plain audio file name`);
+        else if (!existsSync(join(ROOT, 'public', 'audio', n.file))) err(`${w}.narration`, `public/audio/${n.file} not found`);
+      }
+      req(`${w}.narration`, n, 'credit', 'string');
+      optStr(`${w}.narration`, n, 'transcript');
+      if (c.status !== 'defined') err(w, 'a placeholder chapter cannot have narration');
+    }
+  }
   if (req(w, c, 'id', 'string')) {
     if (chapterIds.has(c.id)) err(w, 'duplicate id');
     chapterIds.add(c.id);

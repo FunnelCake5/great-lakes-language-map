@@ -22,3 +22,17 @@ npm run basemap    # re-download and clip the Natural Earth layers into public/g
 
 Pushes to `main` deploy to GitHub Pages through `.github/workflows/deploy.yml`
 (repo Settings → Pages → Source must be set to **GitHub Actions**).
+
+## Data gaps
+
+Everything that needs a source or is contested is listed in the app's **Gaps** tab and in `data/GAPS.md`. Both are generated from the same code (`src/data/gaps.ts`). After changing data, run `npm run gaps`; `npm run validate` fails if `GAPS.md` is out of date.
+
+## Narration
+
+Each chapter can have one optional audio track. Put the file in `public/audio/` and add to the chapter in `data/chapters.json`:
+
+```json
+"narration": { "file": "plate-0.mp3", "credit": "Read by …", "transcript": "…" }
+```
+
+A **Listen** button appears while the timeline is inside that chapter. Audio plays only after a tap, as iPad Safari requires. The validator checks that the file exists and that a credit is given. Placeholder chapters can't have narration.
