@@ -1,0 +1,119 @@
+:root {
+  --paper: #F2EBDD;
+  --margin: #E6DCC6;
+  --lake: #6E8A99;
+  --lake-ink: #45606E;
+  --sepia: #5C4631;
+  --sepia-light: #8C7358;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--margin);
+  color: var(--sepia);
+  font-family: var(--sans);
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior: none;
+}
+
+#app {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+  height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.cartouche {
+  padding: 14px 24px 2px;
+  text-align: center;
+  font-family: var(--serif);
+}
+.cartouche h1 {
+  margin: 0;
+  font-weight: 400;
+  font-variant: small-caps;
+  letter-spacing: 0.14em;
+  font-size: clamp(20px, 3.2vw, 32px);
+  color: var(--sepia);
+}
+.cartouche p {
+  margin: 2px 0 0;
+  font-style: italic;
+  font-size: clamp(13px, 1.5vw, 16px);
+  color: var(--sepia-light);
+}
+
+.map {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+.map canvas, .map svg {
+  position: absolute;
+  inset: 0;
+}
+.map svg { pointer-events: none; }
+
+.status {
+  position: absolute;
+  inset: auto 0 50% 0;
+  margin: 0;
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+}
+.status.error { color: #7A2633; }
+
+/* SVG labels: serif small caps (CLAUDE.md § Fonts). */
+.water-label {
+  font-family: var(--serif);
+  font-style: italic;
+  font-variant: small-caps;
+  letter-spacing: 0.18em;
+  fill: var(--lake-ink);
+  text-anchor: middle;
+  dominant-baseline: middle;
+  paint-order: stroke;
+  stroke: rgba(242, 235, 221, 0.35);
+  stroke-width: 2px;
+}
+.water-label.great { letter-spacing: 0.32em; }
+.river-label {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  fill: var(--lake-ink);
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 2.5px;
+  stroke-linejoin: round;
+}
+.tick {
+  font-family: var(--serif);
+  font-size: 11px;
+  fill: var(--sepia-light);
+  font-variant-numeric: oldstyle-nums;
+}
+.scale-fill { fill: var(--sepia); }
+.scale-empty { fill: var(--paper); stroke: var(--sepia); stroke-width: 0.8; }
+
+.colophon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  justify-content: space-between;
+  padding: 6px 24px 10px;
+  font-size: 12px;
+  color: var(--sepia-light);
+}
+.colophon a { color: inherit; }
