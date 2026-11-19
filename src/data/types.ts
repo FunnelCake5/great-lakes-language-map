@@ -98,6 +98,29 @@ export interface Chapter {
 }
 export interface ChaptersFile { chapters: Chapter[] }
 
+/** Driver layers (SPEC § Layer toggles). Wiring only; history stays in events. */
+export interface DriverPhase {
+  kind: 'pull' | 'release';
+  from_event: string;
+  to_event: string;
+  note?: string;
+}
+export interface DriverRegion { event: string; label: string; note?: string }
+export interface MaizeKeyframe { year: number; lat: number; confidence: Confidence; source: string }
+export interface DriversFile {
+  cahokia: {
+    site: { name: string; lat: number; lon: number; confidence: Confidence; source: string };
+    phases: DriverPhase[];
+    abandoned_event: string;
+    regions: DriverRegion[];
+  };
+  climate: {
+    drought_events: string[];
+    maize_line: { status: 'schematic' | 'sourced'; label: string; note?: string; keyframes: MaizeKeyframe[] };
+  };
+  disease: { status: 'no_data' | 'available'; note?: string };
+}
+
 export interface Dataset {
   sources: Record<string, Source>;
   languages: Language[];
@@ -105,4 +128,5 @@ export interface Dataset {
   events: HistEvent[];
   placenames: PlaceName[];
   chapters: Chapter[];
+  drivers: DriversFile;
 }

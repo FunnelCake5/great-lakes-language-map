@@ -15,6 +15,8 @@ export const DRIVER = {
   americanBuff: '#D9C7A3',
   disease: '#8A8A8A',
   war: '#E34234',
+  migration: '#8C7358',
+  european: '#6F7F5E',
 } as const;
 
 export const BASEMAP = {

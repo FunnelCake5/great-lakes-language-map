@@ -1,9 +1,10 @@
 // Tap card for a nation: who they are, what they speak (via the language
 // tree, rule 6), where they are in the current year and on what evidence.
-import type { Dataset, Source } from '../data/types';
+import type { Dataset, HistEvent, Source } from '../data/types';
 import { NEEDS_SOURCE } from '../data/types';
 import type { LanguageIndex } from '../data/lang';
 import { FAMILY } from '../theme';
+import { LAYERS, driverColour } from '../drivers/groups';
 import type { Keyframe, Sample, Tracks } from '../nations/track';
 
 function h<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, string> = {}, ...children: (Node | string | null | false)[]) {
@@ -52,6 +53,7 @@ export class NationCard {
     private lang: LanguageIndex,
     private onClose: () => void,
     private onSeek: (year: number) => void,
+    private onNation: (id: string) => void = () => {},
   ) {
     const close = h('button', { type: 'button', class: 'card-close', 'aria-label': 'Close' }, '×');
     close.addEventListener('click', () => this.onClose());
@@ -63,11 +65,51 @@ export class NationCard {
   hide() {
     this.el.hidden = true;
     this.shownId = null;
+    this.shownEvent = null;
   }
+
+  private shownEvent: string | null = null;
+
+  /** Event card: title, years, driver, actors, confidence, source (SPEC § Event pulses). */
+  showEvent(e: HistEvent) {
+    if (this.shownEvent === e.id && !this.el.hidden) return;
+    this.shownId = null;
+    this.shownEvent = e.id;
+    const years = e.year_start === e.year_end ? String(e.year_start) : `${e.year_start}–${e.year_end}`;
+    const layer = LAYERS.find((l) => l.drivers.includes(e.driver));
+    const driverName = e.driver === 'war' || e.driver === 'migration' || e.driver === 'european'
+      ? { war: 'War', migration: 'Migration', european: 'Early European contact' }[e.driver]
+      : layer?.label ?? e.driver;
+    const actors = e.actors.map((id) => {
+      const name = this.tracks.byId.get(id)?.nation.name ?? id;
+      const b = h('button', { type: 'button', class: 'actor' }, name);
+      b.addEventListener('click', () => this.onNation(id));
+      return b;
+    });
+    const parts: (HTMLElement | null)[] = [
+      h('header', { class: 'card-head' },
+        h('span', { class: 'card-swatch diamond', style: `background:${driverColour(e.driver)}` }),
+        h('h2', { class: 'event-title' }, e.title)),
+      h('p', { class: 'card-phase' }, h('strong', {}, years), ' · ', driverName ?? e.driver, ' ', badge(e.confidence)),
+      e.note ? h('p', { class: 'card-note-text' }, e.note) : null,
+      actors.length ? h('p', { class: 'card-actors' }, h('span', { class: 'card-k' }, 'Nations involved '), ...actors) : null,
+      h('div', { class: 'frame' }, h('div', { class: 'frame-head' }, h('strong', {}, 'Source')), sourceEl(e.source, this.data.sources)),
+      e.source === NEEDS_SOURCE ? h('p', { class: 'card-warn' }, 'This event has no source yet. It is drawn with a dashed ring and listed in the data gaps.') : null,
+      e.confidence === 'contested' ? h('p', { class: 'card-warn' }, 'Contested: scholars disagree on this event. It is drawn as a ghost.') : null,
+    ];
+    const seek = h('button', { type: 'button', class: 'track-row' }, h('span', { class: 'track-year' }, String(e.year_start)), h('span', { class: 'track-note' }, 'Jump to the start of this event'), h('span', {}));
+    seek.addEventListener('click', () => this.onSeek(e.year_start));
+    parts.push(seek);
+    this.body.replaceChildren(...parts.filter((x): x is HTMLElement => x !== null));
+    this.el.hidden = false;
+  }
+
+  get eventId() { return this.shownEvent; }
 
   show(id: string, year: number) {
     const y = Math.round(year);
     if (this.shownId === id && this.shownYear === y && !this.el.hidden) return;
+    this.shownEvent = null;
     const track = this.tracks.byId.get(id);
     if (!track) return this.hide();
     this.shownId = id;

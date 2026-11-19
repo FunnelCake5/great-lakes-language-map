@@ -1,0 +1,49 @@
+{
+ "cahokia": {
+  "site": {
+   "name": "Cahokia",
+   "lat": 38.66,
+   "lon": -90.06,
+   "confidence": "high",
+   "source": "benson2009"
+  },
+  "phases": [
+   {
+    "kind": "pull",
+    "from_event": "cahokia-bigbang",
+    "to_event": "cahokia-bigbang",
+    "note": "Population drawn in during the planned construction."
+   },
+   {
+    "kind": "release",
+    "from_event": "cahokia-drought",
+    "to_event": "cahokia-abandoned",
+    "note": "Decline after the 1150 drought until abandonment releases people outward."
+   }
+  ],
+  "abandoned_event": "cahokia-abandoned",
+  "regions": [
+   {
+    "event": "vacant-quarter",
+    "label": "Vacant Quarter",
+    "note": "Extent is approximate: drawn as a soft hatched area around the confluence point, not a mapped boundary."
+   }
+  ]
+ },
+ "climate": {
+  "drought_events": ["cahokia-drought", "lia-drought", "maize-line-retreat", "lia-ontario"],
+  "maize_line": {
+   "status": "schematic",
+   "label": "Northern limit of reliable maize",
+   "note": "SCHEMATIC. No sourced coordinates yet (see GAPS.md). The two keyframes only illustrate a southward shift between 1300 and 1550 and must be replaced by sourced positions.",
+   "keyframes": [
+    { "year": 1300, "lat": 45.5, "confidence": "low", "source": "needs_source" },
+    { "year": 1550, "lat": 43.0, "confidence": "low", "source": "needs_source" }
+   ]
+  }
+ },
+ "disease": {
+  "status": "no_data",
+  "note": "No disease events or sources in the dataset yet."
+ }
+}

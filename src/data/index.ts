@@ -5,8 +5,9 @@ import nationsFile from '../../data/nations.json';
 import eventsFile from '../../data/events.json';
 import placenamesFile from '../../data/placenames.json';
 import chaptersFile from '../../data/chapters.json';
+import driversFile from '../../data/drivers.json';
 import type {
-  ChaptersFile, Dataset, EventsFile, LanguagesFile, NationsFile, PlaceNamesFile, SourcesFile,
+  ChaptersFile, Dataset, DriversFile, EventsFile, LanguagesFile, NationsFile, PlaceNamesFile, SourcesFile,
 } from './types';
 
 export const dataset: Dataset = {
@@ -16,4 +17,5 @@ export const dataset: Dataset = {
   events: (eventsFile as unknown as EventsFile).events,
   placenames: (placenamesFile as PlaceNamesFile).placenames,
   chapters: (chaptersFile as ChaptersFile).chapters,
+  drivers: driversFile as unknown as DriversFile,
 };
