@@ -1,0 +1,691 @@
+{
+ "nations": [
+  {
+   "id": "mascouten",
+   "name": "Mascouten",
+   "language": "mascouten",
+   "positions": [
+    {
+     "year": 1600,
+     "lat": 42.1,
+     "lon": -86.0,
+     "confidence": "contested",
+     "source": "sultzman",
+     "note": "Hypothesis A: SW Michigan"
+    },
+    {
+     "year": 1640,
+     "lat": 42.1,
+     "lon": -86.0,
+     "confidence": "contested",
+     "source": "sultzman",
+     "note": "Hypothesis A"
+    },
+    {
+     "year": 1655,
+     "lat": 43.0,
+     "lon": -90.8,
+     "confidence": "low",
+     "source": "sultzman",
+     "note": "Refuge near Mississippi"
+    },
+    {
+     "year": 1670,
+     "lat": 43.97,
+     "lon": -88.95,
+     "confidence": "high",
+     "source": "mccafferty_mo",
+     "note": "Village near Berlin, WI, visited 1673"
+    },
+    {
+     "year": 1680,
+     "lat": 41.6,
+     "lon": -87.9,
+     "confidence": "low",
+     "source": "sultzman",
+     "note": "Near Chicago"
+    },
+    {
+     "year": 1712,
+     "lat": 42.33,
+     "lon": -83.05,
+     "confidence": "high",
+     "source": "tanner1987",
+     "note": "At Detroit with the Fox"
+    },
+    {
+     "year": 1720,
+     "lat": 43.0,
+     "lon": -89.5,
+     "confidence": "low",
+     "source": "sultzman",
+     "note": "Southern band, S. Wisconsin"
+    },
+    {
+     "year": 1770,
+     "lat": 41.6,
+     "lon": -88.6,
+     "confidence": "low",
+     "source": "sultzman",
+     "note": "Absorbed into Prairie Kickapoo/Potawatomi"
+    }
+   ],
+   "alt_positions": [
+    {
+     "year": 1600,
+     "lat": 41.55,
+     "lon": -83.6,
+     "confidence": "contested",
+     "source": "stothers_ih",
+     "note": "Hypothesis B: Maumee Valley, Indian Hills phase"
+    },
+    {
+     "year": 1640,
+     "lat": 41.55,
+     "lon": -83.6,
+     "confidence": "contested",
+     "source": "stothers_ih",
+     "note": "Hypothesis B"
+    }
+   ],
+   "splits": [
+    {
+     "year": 1695,
+     "into": "mascouten-wabash",
+     "note": "Northern band goes south to the Ohio, then the Wabash",
+     "source": "sultzman"
+    }
+   ]
+  },
+  {
+   "id": "mascouten-wabash",
+   "name": "Mascouten (Wabash band)",
+   "language": "mascouten",
+   "positions": [
+    {
+     "year": 1701,
+     "lat": 37.3,
+     "lon": -88.5,
+     "confidence": "low",
+     "source": "sultzman",
+     "note": "Ohio River"
+    },
+    {
+     "year": 1710,
+     "lat": 40.1,
+     "lon": -87.3,
+     "confidence": "low",
+     "source": "sultzman",
+     "note": "Middle Wabash"
+    },
+    {
+     "year": 1779,
+     "lat": 40.1,
+     "lon": -87.3,
+     "confidence": "low",
+     "source": "sultzman",
+     "note": "800 with Piankashaw & Vermilion Kickapoo"
+    },
+    {
+     "year": 1813,
+     "lat": 40.1,
+     "lon": -87.3,
+     "confidence": "low",
+     "source": "sultzman",
+     "note": "Recorded as part of the Kickapoo"
+    }
+   ],
+   "merges": [
+    {
+     "year": 1825,
+     "into": "kickapoo",
+     "source": "sultzman"
+    }
+   ]
+  },
+  {
+   "id": "kickapoo",
+   "name": "Kickapoo",
+   "language": "kickapoo",
+   "positions": [
+    {
+     "year": 1600,
+     "lat": 41.4,
+     "lon": -82.3,
+     "confidence": "contested",
+     "source": "stothers_ih",
+     "note": "Stothers: Whittlesey tradition = Kickapoo"
+    },
+    {
+     "year": 1665,
+     "lat": 43.0,
+     "lon": -90.8,
+     "confidence": "low",
+     "source": "tanner1987"
+    },
+    {
+     "year": 1712,
+     "lat": 42.33,
+     "lon": -83.05,
+     "confidence": "med",
+     "source": "tanner1987"
+    },
+    {
+     "year": 1765,
+     "lat": 40.4,
+     "lon": -87.0,
+     "confidence": "med",
+     "source": "tanner1987"
+    },
+    {
+     "year": 1819,
+     "lat": 39.8,
+     "lon": -89.6,
+     "confidence": "low",
+     "source": "needs_source",
+     "note": "Cede central Illinois"
+    }
+   ]
+  },
+  {
+   "id": "meskwaki",
+   "name": "Meskwaki (Fox)",
+   "language": "meskwaki",
+   "positions": [
+    {
+     "year": 1600,
+     "lat": 43.0,
+     "lon": -84.5,
+     "confidence": "low",
+     "source": "tanner1987",
+     "note": "Lower Michigan, pre-Beaver Wars"
+    },
+    {
+     "year": 1670,
+     "lat": 44.2,
+     "lon": -88.6,
+     "confidence": "med",
+     "source": "tanner1987",
+     "note": "Wolf/Fox River WI"
+    },
+    {
+     "year": 1712,
+     "lat": 42.33,
+     "lon": -83.05,
+     "confidence": "high",
+     "source": "tanner1987"
+    },
+    {
+     "year": 1740,
+     "lat": 42.6,
+     "lon": -90.6,
+     "confidence": "med",
+     "source": "tanner1987"
+    },
+    {
+     "year": 1804,
+     "lat": 41.5,
+     "lon": -90.6,
+     "confidence": "med",
+     "source": "needs_source"
+    }
+   ]
+  },
+  {
+   "id": "sauk",
+   "name": "Sauk",
+   "language": "sauk",
+   "positions": [
+    {
+     "year": 1600,
+     "lat": 43.6,
+     "lon": -83.9,
+     "confidence": "low",
+     "source": "tanner1987",
+     "note": "Saginaw Bay tradition"
+    },
+    {
+     "year": 1670,
+     "lat": 44.5,
+     "lon": -88.0,
+     "confidence": "med",
+     "source": "tanner1987"
+    },
+    {
+     "year": 1770,
+     "lat": 41.5,
+     "lon": -90.6,
+     "confidence": "med",
+     "source": "tanner1987",
+     "note": "Rock River (Saukenuk)"
+    }
+   ]
+  },
+  {
+   "id": "potawatomi",
+   "name": "Potawatomi",
+   "language": "potawatomi",
+   "positions": [
+    {
+     "year": 1600,
+     "lat": 42.5,
+     "lon": -85.5,
+     "confidence": "low",
+     "source": "schwerdt",
+     "note": "Berrien phase possibly Potawatomi or Sauk"
+    },
+    {
+     "year": 1670,
+     "lat": 45.2,
+     "lon": -87.3,
+     "confidence": "med",
+     "source": "tanner1987",
+     "note": "Door Peninsula"
+    },
+    {
+     "year": 1700,
+     "lat": 41.85,
+     "lon": -86.3,
+     "confidence": "med",
+     "source": "tanner1987",
+     "note": "St. Joseph River"
+    },
+    {
+     "year": 1833,
+     "lat": 41.88,
+     "lon": -87.63,
+     "confidence": "high",
+     "source": "needs_source",
+     "note": "Treaty of Chicago"
+    }
+   ]
+  },
+  {
+   "id": "ottawa",
+   "name": "Ottawa (Odawa)",
+   "language": "ottawa",
+   "positions": [
+    {
+     "year": 1600,
+     "lat": 45.6,
+     "lon": -81.7,
+     "confidence": "med",
+     "source": "tanner1987",
+     "note": "Manitoulin / Georgian Bay"
+    },
+    {
+     "year": 1670,
+     "lat": 46.4,
+     "lon": -84.4,
+     "confidence": "med",
+     "source": "tanner1987"
+    },
+    {
+     "year": 1700,
+     "lat": 42.33,
+     "lon": -83.05,
+     "confidence": "med",
+     "source": "tanner1987",
+     "note": "Detroit"
+    },
+    {
+     "year": 1750,
+     "lat": 45.6,
+     "lon": -84.9,
+     "confidence": "med",
+     "source": "tanner1987",
+     "note": "L'Arbre Croche"
+    }
+   ]
+  },
+  {
+   "id": "ojibwe",
+   "name": "Ojibwe",
+   "language": "ojibwe",
+   "positions": [
+    {
+     "year": 1600,
+     "lat": 46.5,
+     "lon": -84.3,
+     "confidence": "med",
+     "source": "tanner1987",
+     "note": "Sault Ste. Marie"
+    },
+    {
+     "year": 1680,
+     "lat": 46.8,
+     "lon": -90.8,
+     "confidence": "med",
+     "source": "tanner1987",
+     "note": "Chequamegon"
+    },
+    {
+     "year": 1750,
+     "lat": 46.1,
+     "lon": -93.7,
+     "confidence": "low",
+     "source": "needs_source",
+     "note": "Push into Dakota country (Mille Lacs)"
+    }
+   ]
+  },
+  {
+   "id": "miami",
+   "name": "Miami",
+   "language": "mi-miami",
+   "positions": [
+    {
+     "year": 1670,
+     "lat": 43.9,
+     "lon": -88.9,
+     "confidence": "med",
+     "source": "mccafferty_mo",
+     "note": "Miami guides at Mascouten village, 1673"
+    },
+    {
+     "year": 1690,
+     "lat": 41.6,
+     "lon": -87.6,
+     "confidence": "low",
+     "source": "tanner1987",
+     "note": "Chicago area"
+    },
+    {
+     "year": 1720,
+     "lat": 41.08,
+     "lon": -85.14,
+     "confidence": "med",
+     "source": "tanner1987",
+     "note": "Kekionga (Fort Wayne)"
+    },
+    {
+     "year": 1846,
+     "lat": 40.6,
+     "lon": -85.7,
+     "confidence": "med",
+     "source": "needs_source",
+     "note": "Removal"
+    }
+   ]
+  },
+  {
+   "id": "wea",
+   "name": "Wea",
+   "language": "mi-wea",
+   "positions": [
+    {
+     "year": 1670,
+     "lat": 43.9,
+     "lon": -88.9,
+     "confidence": "low",
+     "source": "sultzman"
+    },
+    {
+     "year": 1690,
+     "lat": 41.7,
+     "lon": -87.7,
+     "confidence": "low",
+     "source": "sultzman"
+    },
+    {
+     "year": 1720,
+     "lat": 40.4,
+     "lon": -86.97,
+     "confidence": "high",
+     "source": "tanner1987",
+     "note": "Ouiatenon"
+    }
+   ]
+  },
+  {
+   "id": "piankashaw",
+   "name": "Piankashaw",
+   "language": "mi-piankashaw",
+   "positions": [
+    {
+     "year": 1690,
+     "lat": 41.5,
+     "lon": -88.0,
+     "confidence": "low",
+     "source": "tanner1987"
+    },
+    {
+     "year": 1740,
+     "lat": 38.68,
+     "lon": -87.53,
+     "confidence": "med",
+     "source": "tanner1987",
+     "note": "Vincennes"
+    }
+   ]
+  },
+  {
+   "id": "illinois",
+   "name": "Illinois Confederacy (Peoria, Kaskaskia…)",
+   "language": "miami-illinois",
+   "positions": [
+    {
+     "year": 1673,
+     "lat": 40.7,
+     "lon": -91.4,
+     "confidence": "high",
+     "source": "mccafferty_mo",
+     "note": "Peoria met by Marquette on the Mississippi"
+    },
+    {
+     "year": 1680,
+     "lat": 41.32,
+     "lon": -88.99,
+     "confidence": "high",
+     "source": "tanner1987",
+     "note": "Grand Village, Starved Rock"
+    },
+    {
+     "year": 1720,
+     "lat": 37.92,
+     "lon": -89.92,
+     "confidence": "high",
+     "source": "tanner1987",
+     "note": "Kaskaskia"
+    }
+   ]
+  },
+  {
+   "id": "menominee",
+   "name": "Menominee",
+   "language": "menominee",
+   "positions": [
+    {
+     "year": 1600,
+     "lat": 45.1,
+     "lon": -87.6,
+     "confidence": "high",
+     "source": "tanner1987",
+     "note": "Menominee River; long-resident"
+    }
+   ]
+  },
+  {
+   "id": "shawnee",
+   "name": "Shawnee",
+   "language": "shawnee",
+   "positions": [
+    {
+     "year": 1500,
+     "lat": 39.16,
+     "lon": -84.39,
+     "confidence": "contested",
+     "source": "fortancient",
+     "note": "Fort Ancient link debated"
+    },
+    {
+     "year": 1750,
+     "lat": 38.73,
+     "lon": -83.0,
+     "confidence": "med",
+     "source": "tanner1987",
+     "note": "Lower Shawneetown"
+    }
+   ]
+  },
+  {
+   "id": "hochunk",
+   "name": "Ho-Chunk",
+   "language": "hochunk",
+   "positions": [
+    {
+     "year": 1550,
+     "lat": 41.75,
+     "lon": -87.68,
+     "confidence": "med",
+     "source": "isas_huber",
+     "note": "Huber/Palos = ancestral Ho-Chunk"
+    },
+    {
+     "year": 1634,
+     "lat": 44.5,
+     "lon": -88.0,
+     "confidence": "high",
+     "source": "tanner1987",
+     "note": "Green Bay at first French contact"
+    }
+   ]
+  },
+  {
+   "id": "chiwere",
+   "name": "Ioway / Otoe / Missouria",
+   "language": "chiwere",
+   "positions": [
+    {
+     "year": 1300,
+     "lat": 43.4,
+     "lon": -91.4,
+     "confidence": "med",
+     "source": "si_oneota",
+     "note": "Oneota, upper Mississippi"
+    },
+    {
+     "year": 1673,
+     "lat": 39.4,
+     "lon": -91.1,
+     "confidence": "high",
+     "source": "mccafferty_mo",
+     "note": "Missouri named by Miami-Illinois speakers"
+    }
+   ]
+  },
+  {
+   "id": "dhegiha",
+   "name": "Dhegiha (Osage, Omaha, Quapaw…)",
+   "language": "dhegiha",
+   "positions": [
+    {
+     "year": 1300,
+     "lat": 38.9,
+     "lon": -84.0,
+     "confidence": "contested",
+     "source": "rankin_dhegiha",
+     "note": "Proposed Ohio Valley homeland"
+    },
+    {
+     "year": 1673,
+     "lat": 37.0,
+     "lon": -91.0,
+     "confidence": "med",
+     "source": "needs_source"
+    }
+   ]
+  },
+  {
+   "id": "dakota",
+   "name": "Dakota",
+   "language": "dakota",
+   "positions": [
+    {
+     "year": 1660,
+     "lat": 46.2,
+     "lon": -93.6,
+     "confidence": "high",
+     "source": "tanner1987",
+     "note": "Mille Lacs"
+    },
+    {
+     "year": 1780,
+     "lat": 44.9,
+     "lon": -93.3,
+     "confidence": "med",
+     "source": "needs_source",
+     "note": "Minnesota River after Ojibwe pressure"
+    }
+   ]
+  },
+  {
+   "id": "huron",
+   "name": "Huron-Wendat",
+   "language": "huron",
+   "positions": [
+    {
+     "year": 1600,
+     "lat": 44.6,
+     "lon": -79.8,
+     "confidence": "high",
+     "source": "tanner1987",
+     "note": "Huronia"
+    },
+    {
+     "year": 1649,
+     "lat": 44.6,
+     "lon": -79.8,
+     "confidence": "high",
+     "source": "tanner1987",
+     "note": "Dispersed"
+    },
+    {
+     "year": 1701,
+     "lat": 42.1,
+     "lon": -83.1,
+     "confidence": "med",
+     "source": "tanner1987",
+     "note": "Wyandot near Detroit"
+    }
+   ]
+  },
+  {
+   "id": "neutral",
+   "name": "Neutral",
+   "language": "neutral",
+   "positions": [
+    {
+     "year": 1600,
+     "lat": 43.0,
+     "lon": -80.3,
+     "confidence": "high",
+     "source": "tanner1987"
+    },
+    {
+     "year": 1651,
+     "lat": 43.0,
+     "lon": -80.3,
+     "confidence": "high",
+     "source": "tanner1987",
+     "note": "Dispersed"
+    }
+   ]
+  },
+  {
+   "id": "haudenosaunee",
+   "name": "Five Nations Iroquois",
+   "language": "haudenosaunee",
+   "positions": [
+    {
+     "year": 1600,
+     "lat": 42.9,
+     "lon": -76.5,
+     "confidence": "high",
+     "source": "tanner1987",
+     "note": "Homeland, New York"
+    }
+   ]
+  }
+ ]
+}

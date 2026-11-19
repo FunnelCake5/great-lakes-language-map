@@ -1,0 +1,316 @@
+{
+ "languages": [
+  {
+   "id": "algonquian",
+   "name": "Algonquian",
+   "parent": null,
+   "level": "family",
+   "status": "living",
+   "note": "Proto-Algonquian c. 2,500–3,000 years ago; homeland contested (west per Goddard; eastern Great Lakes per Siebert)."
+  },
+  {
+   "id": "ojibwe-potawatomi",
+   "name": "Ojibwe–Potawatomi",
+   "parent": "algonquian",
+   "level": "branch",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "ojibwe",
+   "name": "Ojibwe",
+   "parent": "ojibwe-potawatomi",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "ottawa",
+   "name": "Ottawa (Odawa)",
+   "parent": "ojibwe",
+   "level": "dialect",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "algonquin",
+   "name": "Algonquin",
+   "parent": "ojibwe",
+   "level": "dialect",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "potawatomi",
+   "name": "Potawatomi",
+   "parent": "ojibwe-potawatomi",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "miami-illinois",
+   "name": "Miami–Illinois",
+   "parent": "algonquian",
+   "level": "language",
+   "status": "revitalizing",
+   "note": "One language spoken by several nations."
+  },
+  {
+   "id": "mi-miami",
+   "name": "Miami",
+   "parent": "miami-illinois",
+   "level": "dialect",
+   "status": "revitalizing",
+   "note": ""
+  },
+  {
+   "id": "mi-wea",
+   "name": "Wea",
+   "parent": "miami-illinois",
+   "level": "dialect",
+   "status": "revitalizing",
+   "note": ""
+  },
+  {
+   "id": "mi-piankashaw",
+   "name": "Piankashaw",
+   "parent": "miami-illinois",
+   "level": "dialect",
+   "status": "revitalizing",
+   "note": ""
+  },
+  {
+   "id": "mi-peoria",
+   "name": "Peoria",
+   "parent": "miami-illinois",
+   "level": "dialect",
+   "status": "revitalizing",
+   "note": ""
+  },
+  {
+   "id": "mi-kaskaskia",
+   "name": "Kaskaskia",
+   "parent": "miami-illinois",
+   "level": "dialect",
+   "status": "revitalizing",
+   "note": ""
+  },
+  {
+   "id": "sfk",
+   "name": "Sauk–Fox–Kickapoo",
+   "parent": "algonquian",
+   "level": "branch",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "sauk",
+   "name": "Sauk",
+   "parent": "sfk",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "meskwaki",
+   "name": "Meskwaki (Fox)",
+   "parent": "sfk",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "kickapoo",
+   "name": "Kickapoo",
+   "parent": "sfk",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "mascouten",
+   "name": "Mascouten",
+   "parent": "sfk",
+   "level": "language",
+   "status": "unrecorded",
+   "note": "Placement inferred from history; no recorded text."
+  },
+  {
+   "id": "menominee",
+   "name": "Menominee",
+   "parent": "algonquian",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "shawnee",
+   "name": "Shawnee",
+   "parent": "algonquian",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "siouan",
+   "name": "Siouan",
+   "parent": null,
+   "level": "family",
+   "status": "living",
+   "note": "Homeland debated; Ohio Valley Siouan shows an eastern presence."
+  },
+  {
+   "id": "dakotan",
+   "name": "Dakotan",
+   "parent": "siouan",
+   "level": "branch",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "dakota",
+   "name": "Dakota",
+   "parent": "dakotan",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "lakota",
+   "name": "Lakota",
+   "parent": "dakotan",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "assiniboine",
+   "name": "Assiniboine",
+   "parent": "dakotan",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "chiwere-winnebago",
+   "name": "Chiwere–Winnebago",
+   "parent": "siouan",
+   "level": "branch",
+   "status": "living",
+   "note": "Probable Oneota descendants."
+  },
+  {
+   "id": "hochunk",
+   "name": "Ho-Chunk",
+   "parent": "chiwere-winnebago",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "chiwere",
+   "name": "Chiwere (Ioway–Otoe–Missouria)",
+   "parent": "chiwere-winnebago",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "dhegiha",
+   "name": "Dhegiha",
+   "parent": "siouan",
+   "level": "branch",
+   "status": "living",
+   "note": "Ohio Valley origin proposed; contested."
+  },
+  {
+   "id": "omaha-ponca",
+   "name": "Omaha–Ponca",
+   "parent": "dhegiha",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "osage-kansa",
+   "name": "Osage–Kansa",
+   "parent": "dhegiha",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "quapaw",
+   "name": "Quapaw",
+   "parent": "dhegiha",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "ovs",
+   "name": "Ohio Valley Siouan",
+   "parent": "siouan",
+   "level": "branch",
+   "status": "extinct",
+   "note": ""
+  },
+  {
+   "id": "tutelo",
+   "name": "Tutelo",
+   "parent": "ovs",
+   "level": "language",
+   "status": "extinct",
+   "note": ""
+  },
+  {
+   "id": "ofo",
+   "name": "Ofo",
+   "parent": "ovs",
+   "level": "language",
+   "status": "extinct",
+   "note": ""
+  },
+  {
+   "id": "biloxi",
+   "name": "Biloxi",
+   "parent": "ovs",
+   "level": "language",
+   "status": "extinct",
+   "note": ""
+  },
+  {
+   "id": "iroquoian",
+   "name": "Iroquoian",
+   "parent": null,
+   "level": "family",
+   "status": "living",
+   "note": "Context family (not a focus): Huron-Wendat, Neutral, Haudenosaunee."
+  },
+  {
+   "id": "huron",
+   "name": "Huron-Wendat",
+   "parent": "iroquoian",
+   "level": "language",
+   "status": "living",
+   "note": ""
+  },
+  {
+   "id": "neutral",
+   "name": "Neutral",
+   "parent": "iroquoian",
+   "level": "language",
+   "status": "extinct",
+   "note": ""
+  },
+  {
+   "id": "haudenosaunee",
+   "name": "Five Nations Iroquois",
+   "parent": "iroquoian",
+   "level": "branch",
+   "status": "living",
+   "note": ""
+  }
+ ]
+}

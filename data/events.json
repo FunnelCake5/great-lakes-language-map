@@ -1,0 +1,608 @@
+{
+ "events": [
+  {
+   "id": "cahokia-bigbang",
+   "year_start": 1050,
+   "year_end": 1100,
+   "title": "Cahokia's planned construction and population influx",
+   "driver": "cahokia",
+   "lat": 38.66,
+   "lon": -90.06,
+   "confidence": "high",
+   "source": "benson2009",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "cahokia-drought",
+   "year_start": 1150,
+   "year_end": 1150,
+   "title": "Severe drought; Richland farms abandoned; palisade built",
+   "driver": "climate",
+   "lat": 38.66,
+   "lon": -90.06,
+   "confidence": "high",
+   "source": "benson2009",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "oneota-emerges",
+   "year_start": 1000,
+   "year_end": 1200,
+   "title": "Oneota tradition emerges in Wisconsin",
+   "driver": "migration",
+   "lat": 43.0,
+   "lon": -89.0,
+   "confidence": "med",
+   "source": "si_oneota",
+   "actors": [
+    "chiwere",
+    "hochunk"
+   ],
+   "note": ""
+  },
+  {
+   "id": "oneota-into-bottom",
+   "year_start": 1300,
+   "year_end": 1340,
+   "title": "Oneota intrude into the American Bottom as Cahokia dwindles",
+   "driver": "cahokia",
+   "lat": 38.7,
+   "lon": -90.1,
+   "confidence": "high",
+   "source": "oneota_war",
+   "actors": [
+    "chiwere"
+   ],
+   "note": ""
+  },
+  {
+   "id": "cahokia-abandoned",
+   "year_start": 1350,
+   "year_end": 1400,
+   "title": "Cahokia effectively abandoned",
+   "driver": "cahokia",
+   "lat": 38.66,
+   "lon": -90.06,
+   "confidence": "med",
+   "source": "oneota_war",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "lia-drought",
+   "year_start": 1300,
+   "year_end": 1350,
+   "title": "Little Ice Age onset; Midwest drought",
+   "driver": "climate",
+   "lat": 39.5,
+   "lon": -87.0,
+   "confidence": "med",
+   "source": "bird2017",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "maize-line-retreat",
+   "year_start": 1400,
+   "year_end": 1550,
+   "title": "Corn unreliable in northern Mississippi basin; collapse at La Crosse c.1550",
+   "driver": "climate",
+   "lat": 43.8,
+   "lon": -91.24,
+   "confidence": "med",
+   "source": "si_oneota",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "lia-ontario",
+   "year_start": 1450,
+   "year_end": 1450,
+   "title": "Little Ice Age begins in Neutral country",
+   "driver": "climate",
+   "lat": 43.0,
+   "lon": -80.3,
+   "confidence": "med",
+   "source": "campbell_lia",
+   "actors": [
+    "neutral"
+   ],
+   "note": ""
+  },
+  {
+   "id": "vacant-quarter",
+   "year_start": 1450,
+   "year_end": 1550,
+   "title": "Vacant Quarter: Ohio–Mississippi confluence depopulated",
+   "driver": "climate",
+   "lat": 37.2,
+   "lon": -88.5,
+   "confidence": "high",
+   "source": "cobb2002",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "dhegiha-exit",
+   "year_start": 1400,
+   "year_end": 1600,
+   "title": "Dhegiha Siouans possibly leave the Ohio Valley",
+   "driver": "migration",
+   "lat": 38.9,
+   "lon": -84.0,
+   "confidence": "contested",
+   "source": "rankin_dhegiha",
+   "actors": [
+    "dhegiha"
+   ],
+   "note": ""
+  },
+  {
+   "id": "huber-phase",
+   "year_start": 1450,
+   "year_end": 1650,
+   "title": "Huber phase at Chicago: ancestral Ho-Chunk",
+   "driver": "migration",
+   "lat": 41.75,
+   "lon": -87.68,
+   "confidence": "med",
+   "source": "isas_huber",
+   "actors": [
+    "hochunk"
+   ],
+   "note": ""
+  },
+  {
+   "id": "berrien-phase",
+   "year_start": 1400,
+   "year_end": 1600,
+   "title": "Berrien phase, SW Michigan (possibly Potawatomi or Sauk)",
+   "driver": "migration",
+   "lat": 41.86,
+   "lon": -86.37,
+   "confidence": "med",
+   "source": "schwerdt",
+   "actors": [
+    "potawatomi",
+    "sauk"
+   ],
+   "note": ""
+  },
+  {
+   "id": "indian-hills",
+   "year_start": 1550,
+   "year_end": 1643,
+   "title": "Indian Hills phase, Maumee Valley: Stothers' Mascouten",
+   "driver": "migration",
+   "lat": 41.55,
+   "lon": -83.6,
+   "confidence": "contested",
+   "source": "stothers_fm",
+   "actors": [
+    "mascouten"
+   ],
+   "note": ""
+  },
+  {
+   "id": "trade-goods-inland",
+   "year_start": 1525,
+   "year_end": 1630,
+   "title": "European goods arrive through Native networks before Europeans",
+   "driver": "european",
+   "lat": 39.16,
+   "lon": -84.39,
+   "confidence": "med",
+   "source": "fortancient",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "huber-trade-goods",
+   "year_start": 1550,
+   "year_end": 1630,
+   "title": "Earliest European trade goods in Illinois (Huber site)",
+   "driver": "european",
+   "lat": 41.75,
+   "lon": -87.68,
+   "confidence": "high",
+   "source": "mcja_huber",
+   "actors": [
+    "hochunk"
+   ],
+   "note": ""
+  },
+  {
+   "id": "neutral-raid-1638",
+   "year_start": 1638,
+   "year_end": 1638,
+   "title": "Neutral war party returns with Mascouten prisoners",
+   "driver": "iroquoian",
+   "lat": 42.1,
+   "lon": -86.0,
+   "confidence": "med",
+   "source": "amanth22",
+   "actors": [
+    "neutral",
+    "mascouten"
+   ],
+   "note": ""
+  },
+  {
+   "id": "fire-nation-siege",
+   "year_start": 1643,
+   "year_end": 1643,
+   "title": "Neutral siege of a Fire Nation town; 800 captives",
+   "driver": "iroquoian",
+   "lat": 42.1,
+   "lon": -86.0,
+   "confidence": "high",
+   "source": "canenc_neutral",
+   "actors": [
+    "neutral",
+    "mascouten"
+   ],
+   "note": "Location contested (SW Michigan vs Maumee). Older sources say 1641."
+  },
+  {
+   "id": "huron-destroyed",
+   "year_start": 1649,
+   "year_end": 1649,
+   "title": "Huron Confederacy destroyed by the Iroquois",
+   "driver": "iroquoian",
+   "lat": 44.6,
+   "lon": -79.8,
+   "confidence": "high",
+   "source": "tanner1987",
+   "actors": [
+    "huron",
+    "haudenosaunee"
+   ],
+   "note": ""
+  },
+  {
+   "id": "neutral-destroyed",
+   "year_start": 1650,
+   "year_end": 1651,
+   "title": "Tionontati and Neutral dispersed",
+   "driver": "iroquoian",
+   "lat": 43.0,
+   "lon": -80.3,
+   "confidence": "high",
+   "source": "tanner1987",
+   "actors": [
+    "neutral",
+    "haudenosaunee"
+   ],
+   "note": ""
+  },
+  {
+   "id": "algonquian-exodus",
+   "year_start": 1650,
+   "year_end": 1665,
+   "title": "Algonquian refugees pushed west into Wisconsin",
+   "driver": "migration",
+   "lat": 43.5,
+   "lon": -88.5,
+   "confidence": "high",
+   "source": "tanner1987",
+   "actors": [
+    "mascouten",
+    "kickapoo",
+    "meskwaki",
+    "sauk",
+    "potawatomi"
+   ],
+   "note": ""
+  },
+  {
+   "id": "french-peace-1667",
+   "year_start": 1667,
+   "year_end": 1667,
+   "title": "Iroquois–French peace extends to western allies",
+   "driver": "french",
+   "lat": 45.5,
+   "lon": -73.57,
+   "confidence": "med",
+   "source": "needs_source",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "allouez-mascouten",
+   "year_start": 1669,
+   "year_end": 1670,
+   "title": "Allouez visits; Mascouten identify as the Assistaeronon",
+   "driver": "french",
+   "lat": 43.97,
+   "lon": -88.95,
+   "confidence": "med",
+   "source": "sultzman",
+   "actors": [
+    "mascouten"
+   ],
+   "note": "Verify against Jesuit Relations 1670."
+  },
+  {
+   "id": "marquette-1673",
+   "year_start": 1673,
+   "year_end": 1673,
+   "title": "Marquette & Jolliet at the Mascouten village; Miami guides",
+   "driver": "french",
+   "lat": 43.97,
+   "lon": -88.95,
+   "confidence": "high",
+   "source": "mccafferty_mo",
+   "actors": [
+    "mascouten",
+    "miami"
+   ],
+   "note": ""
+  },
+  {
+   "id": "ft-st-louis-siege",
+   "year_start": 1684,
+   "year_end": 1684,
+   "title": "Iroquois siege of Fort St. Louis fails",
+   "driver": "iroquoian",
+   "lat": 41.32,
+   "lon": -88.99,
+   "confidence": "med",
+   "source": "tanner1987",
+   "actors": [
+    "haudenosaunee",
+    "illinois"
+   ],
+   "note": ""
+  },
+  {
+   "id": "licenses-revoked",
+   "year_start": 1696,
+   "year_end": 1696,
+   "title": "French Crown revokes western trade licenses",
+   "driver": "french",
+   "lat": 45.5,
+   "lon": -73.57,
+   "confidence": "high",
+   "source": "needs_source",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "great-peace",
+   "year_start": 1701,
+   "year_end": 1701,
+   "title": "Great Peace of Montreal",
+   "driver": "french",
+   "lat": 45.5,
+   "lon": -73.57,
+   "confidence": "high",
+   "source": "needs_source",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "detroit-founded",
+   "year_start": 1701,
+   "year_end": 1701,
+   "title": "Fort Pontchartrain founded at Detroit",
+   "driver": "french",
+   "lat": 42.33,
+   "lon": -83.05,
+   "confidence": "high",
+   "source": "tanner1987",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "fox-detroit-1712",
+   "year_start": 1712,
+   "year_end": 1712,
+   "title": "Fox, Kickapoo & Mascouten besieged at Detroit",
+   "driver": "war",
+   "lat": 42.33,
+   "lon": -83.05,
+   "confidence": "high",
+   "source": "tanner1987",
+   "actors": [
+    "meskwaki",
+    "kickapoo",
+    "mascouten"
+   ],
+   "note": ""
+  },
+  {
+   "id": "fox-defeat-1730",
+   "year_start": 1730,
+   "year_end": 1730,
+   "title": "Fox nearly annihilated in northern Illinois",
+   "driver": "war",
+   "lat": 40.9,
+   "lon": -88.6,
+   "confidence": "high",
+   "source": "tanner1987",
+   "actors": [
+    "meskwaki",
+    "mascouten",
+    "kickapoo"
+   ],
+   "note": ""
+  },
+  {
+   "id": "ojibwe-dakota",
+   "year_start": 1736,
+   "year_end": 1770,
+   "title": "Ojibwe push Dakota from Mille Lacs",
+   "driver": "war",
+   "lat": 46.1,
+   "lon": -93.7,
+   "confidence": "med",
+   "source": "needs_source",
+   "actors": [
+    "ojibwe",
+    "dakota"
+   ],
+   "note": ""
+  },
+  {
+   "id": "pontiac",
+   "year_start": 1763,
+   "year_end": 1764,
+   "title": "Pontiac's War",
+   "driver": "british",
+   "lat": 42.33,
+   "lon": -83.05,
+   "confidence": "high",
+   "source": "tanner1987",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "croghan-1765",
+   "year_start": 1765,
+   "year_end": 1765,
+   "title": "Kickapoo & Mascouten capture Croghan at the Wabash mouth",
+   "driver": "british",
+   "lat": 37.8,
+   "lon": -88.03,
+   "confidence": "high",
+   "source": "tanner1987",
+   "actors": [
+    "kickapoo",
+    "mascouten"
+   ],
+   "note": ""
+  },
+  {
+   "id": "stanwix-1768",
+   "year_start": 1768,
+   "year_end": 1768,
+   "title": "Fort Stanwix treaty opens Ohio Valley",
+   "driver": "british",
+   "lat": 43.21,
+   "lon": -75.45,
+   "confidence": "high",
+   "source": "tanner1987",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "clark-1778",
+   "year_start": 1778,
+   "year_end": 1779,
+   "title": "G. R. Clark seizes the Illinois Country",
+   "driver": "american",
+   "lat": 38.68,
+   "lon": -87.53,
+   "confidence": "high",
+   "source": "tanner1987",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "putnam-1792",
+   "year_start": 1792,
+   "year_end": 1792,
+   "title": "Putnam treaty at Vincennes (never ratified)",
+   "driver": "american",
+   "lat": 38.68,
+   "lon": -87.53,
+   "confidence": "med",
+   "source": "needs_source",
+   "actors": [
+    "mascouten-wabash",
+    "wea",
+    "piankashaw"
+   ],
+   "note": ""
+  },
+  {
+   "id": "greenville-1795",
+   "year_start": 1795,
+   "year_end": 1795,
+   "title": "Treaty of Greenville",
+   "driver": "american",
+   "lat": 40.1,
+   "lon": -84.63,
+   "confidence": "high",
+   "source": "royce1899",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "removal-act",
+   "year_start": 1830,
+   "year_end": 1830,
+   "title": "Indian Removal Act",
+   "driver": "american",
+   "lat": 38.9,
+   "lon": -77.0,
+   "confidence": "high",
+   "source": "needs_source",
+   "actors": [],
+   "note": ""
+  },
+  {
+   "id": "black-hawk",
+   "year_start": 1832,
+   "year_end": 1832,
+   "title": "Black Hawk War",
+   "driver": "american",
+   "lat": 42.3,
+   "lon": -89.6,
+   "confidence": "high",
+   "source": "needs_source",
+   "actors": [
+    "sauk",
+    "meskwaki"
+   ],
+   "note": ""
+  },
+  {
+   "id": "chicago-1833",
+   "year_start": 1833,
+   "year_end": 1833,
+   "title": "Treaty of Chicago: Potawatomi cession",
+   "driver": "american",
+   "lat": 41.88,
+   "lon": -87.63,
+   "confidence": "high",
+   "source": "royce1899",
+   "actors": [
+    "potawatomi"
+   ],
+   "note": ""
+  },
+  {
+   "id": "trail-of-death",
+   "year_start": 1838,
+   "year_end": 1838,
+   "title": "Potawatomi Trail of Death",
+   "driver": "american",
+   "lat": 41.4,
+   "lon": -86.3,
+   "confidence": "high",
+   "source": "needs_source",
+   "actors": [
+    "potawatomi"
+   ],
+   "note": ""
+  },
+  {
+   "id": "miami-removal",
+   "year_start": 1846,
+   "year_end": 1846,
+   "title": "Miami removal from Indiana",
+   "driver": "american",
+   "lat": 40.6,
+   "lon": -85.7,
+   "confidence": "med",
+   "source": "needs_source",
+   "actors": [
+    "miami"
+   ],
+   "note": ""
+  }
+ ]
+}
