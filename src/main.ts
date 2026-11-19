@@ -1,57 +1,134 @@
 import './style.css';
+import type { GeoProjection } from 'd3-geo';
 import { dataset } from './data';
+import { languageIndex } from './data/lang';
 import { NEEDS_SOURCE } from './data/types';
 import { drawBasemap, loadBasemap } from './map/basemap';
 import type { Basemap } from './map/basemap';
 import { drawLabels } from './map/labels';
 import { makeProjection } from './map/projection';
+import { NationLayer } from './nations/layer';
+import { Tracks } from './nations/track';
 import { Clock } from './time/clock';
 import { readHash, syncHash } from './time/url';
+import { NationCard } from './ui/card';
 import { mountTimebar } from './ui/timebar';
 
 const container = document.getElementById('map') as HTMLDivElement;
-const canvas = document.getElementById('basemap') as HTMLCanvasElement;
-const svg = document.getElementById('labels') as unknown as SVGSVGElement;
+const baseCanvas = document.getElementById('basemap') as HTMLCanvasElement;
+const baseLabels = document.getElementById('labels') as unknown as SVGSVGElement;
+const nationCanvas = document.getElementById('nations') as HTMLCanvasElement;
+const nationSvg = document.getElementById('nation-labels') as unknown as SVGSVGElement;
+const nationLabels = nationSvg.querySelector('g') as SVGGElement;
+const todayNote = document.getElementById('today-note') as HTMLDivElement;
 const status = document.getElementById('status') as HTMLParagraphElement;
 const counts = document.getElementById('counts') as HTMLSpanElement;
 
+const lang = languageIndex(dataset.languages);
+const tracks = new Tracks(dataset.nations);
+const nations = new NationLayer(tracks, lang);
+const clock = new Clock(readHash());
+
+let projection: GeoProjection | null = null;
+let size = { width: 0, height: 0, dpr: 1 };
+
 function summarise() {
-  const { nations, events, placenames, sources } = dataset;
+  const { nations: ns, events, placenames, sources } = dataset;
   const records = [
     ...events,
     ...placenames,
-    ...nations.flatMap((n) => [...n.positions, ...(n.alt_positions ?? [])]),
+    ...ns.flatMap((n) => [...n.positions, ...(n.alt_positions ?? [])]),
   ];
   const gaps = records.filter((r) => r.source === NEEDS_SOURCE || r.confidence === 'contested').length;
   counts.textContent =
-    `${nations.length} nations · ${events.length} events · ${Object.keys(sources).length - 1} sources · ${gaps} data gaps`;
+    `${ns.length} nations · ${events.length} events · ${Object.keys(sources).length - 1} sources · ${gaps} data gaps`;
 }
 
-function render(map: Basemap) {
+function sizeCanvas(c: HTMLCanvasElement) {
+  c.width = Math.round(size.width * size.dpr);
+  c.height = Math.round(size.height * size.dpr);
+  c.style.width = `${size.width}px`;
+  c.style.height = `${size.height}px`;
+  const ctx = c.getContext('2d')!;
+  ctx.setTransform(size.dpr, 0, 0, size.dpr, 0, 0);
+  return ctx;
+}
+
+/** Static layers: only on resize. */
+function renderBase(map: Basemap) {
   const { width, height } = container.getBoundingClientRect();
   if (width < 10 || height < 10) return;
-  const dpr = Math.min(window.devicePixelRatio || 1, 3);
-  canvas.width = Math.round(width * dpr);
-  canvas.height = Math.round(height * dpr);
-  canvas.style.width = `${width}px`;
-  canvas.style.height = `${height}px`;
-  const ctx = canvas.getContext('2d')!;
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
+  size = { width, height, dpr: Math.min(window.devicePixelRatio || 1, 3) };
   const narrow = width < 600;
-  const projection = makeProjection(width, height, {
+  projection = makeProjection(width, height, {
     top: narrow ? 10 : 16,
     right: narrow ? 12 : 20,
     bottom: narrow ? 52 : 56,
     left: narrow ? 40 : 52,
   });
-  drawBasemap(ctx, projection, map, width, height);
-  drawLabels(svg, projection, map, width, height);
+  drawBasemap(sizeCanvas(baseCanvas), projection, map, width, height);
+  drawLabels(baseLabels, projection, map, width, height);
+  for (const svg of [nationSvg]) {
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    svg.setAttribute('width', String(width));
+    svg.setAttribute('height', String(height));
+  }
+  sizeCanvas(nationCanvas);
+  renderTime();
 }
+
+/** Time-dependent layers: on every clock change. */
+function renderTime() {
+  if (!projection) return;
+  const ctx = nationCanvas.getContext('2d')!;
+  ctx.clearRect(0, 0, size.width, size.height);
+  const s = clock.state;
+  const today = s.mode === 'today';
+  todayNote.hidden = !today;
+  if (today) {
+    nationLabels.replaceChildren();
+    card.hide();
+    nations.selected = null;
+    return;
+  }
+  nations.draw(ctx, projection, s.year);
+  nations.drawLabels(nationLabels, size.width, size.height);
+  if (nations.selected) card.show(nations.selected, s.year);
+}
+
+const card = new NationCard(
+  container,
+  dataset,
+  tracks,
+  lang,
+  () => { nations.selected = null; card.hide(); renderTime(); },
+  (year) => { clock.pause(); clock.seek(year); },
+);
+
+// Taps: select the nearest nation, or clear the selection. No hover anywhere.
+let down: { x: number; y: number; id: number } | null = null;
+container.addEventListener('pointerdown', (ev) => {
+  if ((ev.target as HTMLElement).closest('.card')) return;
+  down = { x: ev.clientX, y: ev.clientY, id: ev.pointerId };
+});
+container.addEventListener('pointerup', (ev) => {
+  if (!down || down.id !== ev.pointerId) return;
+  const moved = Math.hypot(ev.clientX - down.x, ev.clientY - down.y);
+  down = null;
+  if (moved > 10 || clock.state.mode === 'today') return;
+  const r = container.getBoundingClientRect();
+  const id = nations.hit(ev.clientX - r.left, ev.clientY - r.top);
+  nations.selected = id;
+  if (id) card.show(id, clock.state.year);
+  else card.hide();
+  renderTime();
+});
+window.addEventListener('keydown', (ev) => {
+  if (ev.key === 'Escape' && nations.selected) { nations.selected = null; card.hide(); renderTime(); }
+});
 
 async function start() {
   summarise();
-  const clock = new Clock(readHash());
   mountTimebar(
     document.getElementById('timebar')!,
     document.getElementById('readout')!,
@@ -60,17 +137,21 @@ async function start() {
     dataset.chapters,
   );
   syncHash(clock);
-  // Phase 3+ will subscribe the map renderer to the clock.
+  let timeFrame = 0;
+  clock.subscribe(() => {
+    cancelAnimationFrame(timeFrame);
+    timeFrame = requestAnimationFrame(renderTime);
+  });
   try {
     const map = await loadBasemap();
     let frame = 0;
     const schedule = () => {
       cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => render(map));
+      frame = requestAnimationFrame(() => renderBase(map));
     };
     new ResizeObserver(schedule).observe(container);
     matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`).addEventListener('change', schedule);
-    render(map);
+    renderBase(map);
     status.hidden = true;
     document.body.dataset.ready = 'true';
   } catch (e) {
