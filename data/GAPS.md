@@ -1,6 +1,6 @@
 # Data gaps
 
-Items that need a source (`needs_source`) or are disputed (`contested`). Fix them by adding a source to `sources.json` and updating the record.
+Items that need a source (`needs_source`) or are disputed (`contested`). Fix them by adding a source to `sources.json` and updating the record. The app's "Data gaps" panel shows the same list.
 
 ## Needs source
 - event `french-peace-1667`: Iroquois–French peace extends to western allies
@@ -22,6 +22,8 @@ Items that need a source (`needs_source`) or are disputed (`contested`). Fix the
 - placename `Michigan`
 - placename `Minnesota`
 - placename `Iowa`
+- maize line keyframe @ 1300 (schematic)
+- maize line keyframe @ 1550 (schematic)
 
 ## Contested
 - event `dhegiha-exit`: Dhegiha Siouans possibly leave the Ohio Valley

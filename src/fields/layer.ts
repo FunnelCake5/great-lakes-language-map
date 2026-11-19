@@ -80,12 +80,13 @@ export class FieldLayer {
     m.restore();
 
     const tile = document.createElement('canvas');
-    const t = Math.round(5 * dpr);
+    const t = Math.max(3, Math.round(5 * dpr));
     tile.width = tile.height = t;
     const tg = tile.getContext('2d')!;
     tg.fillStyle = '#000';
-    tg.beginPath(); tg.arc(t * 0.3, t * 0.3, 0.9 * dpr, 0, Math.PI * 2); tg.fill();
-    tg.beginPath(); tg.arc(t * 0.8, t * 0.8, 0.9 * dpr, 0, Math.PI * 2); tg.fill();
+    const r = Math.max(0.7, 0.9 * dpr);
+    tg.beginPath(); tg.arc(t * 0.3, t * 0.3, r, 0, Math.PI * 2); tg.fill();
+    tg.beginPath(); tg.arc(t * 0.8, t * 0.8, r, 0, Math.PI * 2); tg.fill();
     const d = this.dots.getContext('2d')!;
     d.fillStyle = d.createPattern(tile, 'repeat')!;
     d.fillRect(0, 0, W, H);
