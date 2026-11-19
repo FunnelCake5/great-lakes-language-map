@@ -11,6 +11,7 @@ import { legendContent } from './ui/legend';
 import { mountPanel } from './ui/panel';
 import { mountTree, nationsUnder } from './ui/tree';
 import { Palette } from './data/palette';
+import { TodayLayer } from './today/layer';
 import { makeProjection } from './map/projection';
 import { NationLayer } from './nations/layer';
 import { Tracks } from './nations/track';
@@ -35,6 +36,8 @@ const driverSvg = document.getElementById('driver-labels') as unknown as SVGSVGE
 const overlayLabels = driverSvg.querySelector('.overlay-labels') as SVGGElement;
 const eventLabels = driverSvg.querySelector('.event-labels') as SVGGElement;
 const todayNote = document.getElementById('today-note') as HTMLDivElement;
+const todaySvg = document.getElementById('today-labels') as unknown as SVGSVGElement;
+const todayGroup = todaySvg.querySelector('g') as SVGGElement;
 const status = document.getElementById('status') as HTMLParagraphElement;
 const counts = document.getElementById('counts') as HTMLSpanElement;
 
@@ -43,6 +46,7 @@ const tracks = new Tracks(dataset.nations);
 const palette = new Palette(lang, dataset.languages, dataset.nations.map((n) => n.language));
 const nations = new NationLayer(tracks, lang, palette);
 const fields = new FieldLayer(tracks, lang, palette);
+const today = new TodayLayer(dataset.placenames, dataset.today, palette, (id) => lang.byId.get(id)?.name ?? id);
 const clock = new Clock(readHash());
 const layers = new LayerState();
 const events = new EventLayer(dataset.events, layers);
@@ -91,7 +95,7 @@ function renderBase(map: Basemap) {
   });
   drawBasemap(sizeCanvas(baseCanvas), projection, map, width, height);
   drawLabels(baseLabels, projection, map, width, height);
-  for (const svg of [nationSvg, driverSvg]) {
+  for (const svg of [nationSvg, driverSvg, todaySvg]) {
     svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
     svg.setAttribute('width', String(width));
     svg.setAttribute('height', String(height));
@@ -113,16 +117,33 @@ function renderTime() {
   const fctx = fieldCanvas.getContext('2d')!;
   fctx.clearRect(0, 0, size.width, size.height);
   const s = clock.state;
-  const today = s.mode === 'today';
-  todayNote.hidden = !today;
-  if (today) {
+  const isToday = s.mode === 'today';
+  // The placeholder only shows while no present-day nation is sourced.
+  todayNote.hidden = !isToday || dataset.today.length > 0;
+  if (isToday) {
     nationLabels.replaceChildren();
-    card.hide();
+    if (card.languageId) {
+      // Leave no stale language highlight behind for when history resumes.
+      nations.focus = null;
+      fields.focus = null;
+      tree?.setFocus(null);
+    }
+    if (nations.selected || events.selected || card.languageId) card.hide();
     nations.selected = null;
     events.selected = null;
     clearDrivers();
+    today.showPlaces = layers.isOn('placenames');
+    // Labels avoid whatever panels are open over the map.
+    const c = container.getBoundingClientRect();
+    const obstacles = ['.key', '.card:not([hidden])', '#today-note:not([hidden])']
+      .map((sel) => container.querySelector(sel) as HTMLElement | null)
+      .filter((e): e is HTMLElement => !!e && e.offsetParent !== null)
+      .map((e) => { const r = e.getBoundingClientRect(); return [r.left - c.left, r.top - c.top, r.right - c.left, r.bottom - c.top] as [number, number, number, number]; });
+    today.draw(todayGroup, projection, size.width, size.height, obstacles);
     return;
   }
+  todayGroup.replaceChildren();
+  today.selected = null;
   fields.draw(fctx, s.year);
   nations.draw(ctx, projection, s.year);
   nations.drawLabels(nationLabels, size.width, size.height);
@@ -196,6 +217,7 @@ function focusLanguage(id: string | null) {
 
 function clearSelection() {
   if (card.languageId) return focusLanguage(null);
+  today.selected = null;
   nations.selected = null;
   events.selected = null;
   card.hide();
@@ -226,10 +248,23 @@ container.addEventListener('pointerup', (ev) => {
   if (!down || down.id !== ev.pointerId) return;
   const moved = Math.hypot(ev.clientX - down.x, ev.clientY - down.y);
   down = null;
-  if (moved > 10 || clock.state.mode === 'today') return;
+  if (moved > 10) return;
   const r = container.getBoundingClientRect();
   const x = ev.clientX - r.left;
   const y = ev.clientY - r.top;
+  if (clock.state.mode === 'today') {
+    const t = today.hit(x, y);
+    today.selected = t?.key ?? null;
+    if (t?.kind === 'place') {
+      const p = dataset.placenames.find((q) => q.name === t.key)!;
+      card.showPlace(p, palette.colourOf(p.language));
+    } else if (t?.kind === 'nation') {
+      const n = dataset.today.find((q) => q.id === t.key)!;
+      card.showToday(n, palette.colourOf(n.language));
+    } else card.hide();
+    renderTime();
+    return;
+  }
   // Event diamonds sit on top, so they win a tap; their card links to the nations involved.
   const e = events.hit(x, y);
   if (e) return selectEvent(e.id);
@@ -238,7 +273,7 @@ container.addEventListener('pointerup', (ev) => {
   else clearSelection();
 });
 window.addEventListener('keydown', (ev) => {
-  if (ev.key === 'Escape' && (nations.selected || events.selected || card.languageId)) clearSelection();
+  if (ev.key === 'Escape' && (nations.selected || events.selected || card.languageId || today.selected)) clearSelection();
 });
 
 async function start() {

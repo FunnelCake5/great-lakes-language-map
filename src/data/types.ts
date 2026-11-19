@@ -121,6 +121,24 @@ export interface DriversFile {
   disease: { status: 'no_data' | 'available'; note?: string };
 }
 
+/**
+ * A present-day nation for the Today view. `historic` links to nation ids in
+ * nations.json where the lineage is sourced; `kind` says what the point marks.
+ */
+export interface TodayNation {
+  id: string;
+  name: string;
+  language: string;
+  historic?: string[];
+  kind: 'headquarters' | 'reservation' | 'community';
+  lat: number;
+  lon: number;
+  confidence: Confidence;
+  source: string;
+  note?: string;
+}
+export interface TodayFile { note?: string; nations: TodayNation[] }
+
 export interface Dataset {
   sources: Record<string, Source>;
   languages: Language[];
@@ -129,4 +147,5 @@ export interface Dataset {
   placenames: PlaceName[];
   chapters: Chapter[];
   drivers: DriversFile;
+  today: TodayNation[];
 }
