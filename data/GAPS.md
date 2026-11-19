@@ -54,3 +54,4 @@ Items that need a source (`needs_source`) or are disputed (`contested`). Fix the
 - Maize-line keyframes: no sourced coordinates yet; render as schematic.
 - Population figures per nation over time: not yet sourced.
 - Iroquois raid 1682–83 and Fox portage 1660 come only from Sultzman.
+- TODO(data): nations hold their last recorded position until 1900 (SPEC interpolation rule). Several tracks end long before then (e.g. `neutral` 1651, `huron` 1701, `menominee` and `haudenosaunee` 1600), so later keyframes or end-of-track records are needed.
