@@ -20,6 +20,7 @@ export function loadRaw() {
     placenames: readJson('placenames.json') as any,
     chapters: readJson('chapters.json') as any,
     drivers: readJson('drivers.json') as any,
+    today: readJson('today.json') as any,
   };
 }
 
@@ -33,5 +34,6 @@ export function loadDataset(): Dataset {
     placenames: r.placenames.placenames,
     chapters: r.chapters.chapters,
     drivers: r.drivers,
+    today: r.today.nations,
   };
 }

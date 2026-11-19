@@ -1,0 +1,872 @@
+{
+ "note": "Present-day nations for the Today view. Names: Federal Register list of 30 Jan 2026 (fr2026_tribes). Points: Census TIGER/Line 2024 internal points of each nation’s reservation or tribal statistical area (census_tiger2024_aiannh). Each `language` is the heritage language from languages.json assigned during research, not taken from these sources; reviewers should confirm. US nations inside the map extent only; Canadian First Nations not yet included. Built by scripts/research/build_today.py.",
+ "nations": [
+  {
+   "id": "bad-river",
+   "name": "Bad River Band of the Lake Superior Tribe of Chippewa Indians of the Bad River Reservation, Wisconsin",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 46.521,
+   "lon": -90.665,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Bad River Reservation."
+  },
+  {
+   "id": "bay-mills",
+   "name": "Bay Mills Indian Community, Michigan",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 46.446,
+   "lon": -84.61,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Bay Mills Reservation. Language (Ojibwe) assigned during research; the official name does not state it."
+  },
+  {
+   "id": "keweenaw-bay",
+   "name": "Keweenaw Bay Indian Community, Michigan",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 46.78,
+   "lon": -88.37,
+   "confidence": "med",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census L'Anse Reservation. The community also holds the Ontonagon Reservation. Match inferred; the Census name does not name the community. Language (Ojibwe) assigned during research; the official name does not state it."
+  },
+  {
+   "id": "lac-courte-oreilles",
+   "name": "Lac Courte Oreilles Band of Lake Superior Chippewa Indians of Wisconsin",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 45.881,
+   "lon": -91.331,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Lac Courte Oreilles Reservation."
+  },
+  {
+   "id": "lac-du-flambeau",
+   "name": "Lac du Flambeau Band of Lake Superior Chippewa Indians of the Lac du Flambeau Reservation of Wisconsin",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 45.985,
+   "lon": -89.88,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Lac du Flambeau Reservation."
+  },
+  {
+   "id": "lac-vieux-desert",
+   "name": "Lac Vieux Desert Band of Lake Superior Chippewa Indians of Michigan",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 46.283,
+   "lon": -89.176,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Lac Vieux Desert Reservation."
+  },
+  {
+   "id": "red-cliff",
+   "name": "Red Cliff Band of Lake Superior Chippewa Indians of Wisconsin",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 46.91,
+   "lon": -90.787,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Red Cliff Reservation."
+  },
+  {
+   "id": "red-lake",
+   "name": "Red Lake Band of Chippewa Indians, Minnesota",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 48.143,
+   "lon": -95.163,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Red Lake Reservation."
+  },
+  {
+   "id": "saginaw-chippewa",
+   "name": "Saginaw Chippewa Indian Tribe of Michigan",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 43.676,
+   "lon": -84.781,
+   "confidence": "med",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Isabella Reservation. Match inferred; the Census name does not name the tribe."
+  },
+  {
+   "id": "sault-ste-marie",
+   "name": "Sault Ste. Marie Tribe of Chippewa Indians, Michigan",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 46.473,
+   "lon": -84.208,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Sault Ste. Marie Reservation."
+  },
+  {
+   "id": "sokaogon",
+   "name": "Sokaogon Chippewa Community, Wisconsin",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 45.491,
+   "lon": -88.99,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Sokaogon Chippewa Community."
+  },
+  {
+   "id": "st-croix",
+   "name": "St. Croix Chippewa Indians of Wisconsin",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 45.523,
+   "lon": -92.275,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census St. Croix Reservation."
+  },
+  {
+   "id": "bois-forte",
+   "name": "Bois Forte Band (Nett Lake)",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 48.052,
+   "lon": -93.254,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Bois Forte Reservation. A component band of the Minnesota Chippewa Tribe."
+  },
+  {
+   "id": "fond-du-lac",
+   "name": "Fond du Lac Band",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 46.746,
+   "lon": -92.638,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Fond du Lac Reservation. A component band of the Minnesota Chippewa Tribe."
+  },
+  {
+   "id": "grand-portage",
+   "name": "Grand Portage Band",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 47.965,
+   "lon": -89.737,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Grand Portage Reservation. A component band of the Minnesota Chippewa Tribe."
+  },
+  {
+   "id": "leech-lake",
+   "name": "Leech Lake Band",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 47.358,
+   "lon": -94.25,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Leech Lake Reservation. A component band of the Minnesota Chippewa Tribe."
+  },
+  {
+   "id": "mille-lacs",
+   "name": "Mille Lacs Band",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 46.13,
+   "lon": -93.597,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Mille Lacs Reservation. A component band of the Minnesota Chippewa Tribe."
+  },
+  {
+   "id": "white-earth",
+   "name": "White Earth Band",
+   "language": "ojibwe",
+   "kind": "reservation",
+   "lat": 47.212,
+   "lon": -95.728,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census White Earth Reservation. A component band of the Minnesota Chippewa Tribe."
+  },
+  {
+   "id": "grand-traverse",
+   "name": "Grand Traverse Band of Ottawa and Chippewa Indians, Michigan",
+   "language": "ojibwe",
+   "historic": [
+    "ottawa"
+   ],
+   "kind": "reservation",
+   "lat": 45.02,
+   "lon": -85.606,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Grand Traverse Reservation. Odawa and Ojibwe; language set to Ojibwe, of which Odawa is a dialect in languages.json."
+  },
+  {
+   "id": "little-traverse-bay",
+   "name": "Little Traverse Bay Bands of Odawa Indians, Michigan",
+   "language": "ottawa",
+   "historic": [
+    "ottawa"
+   ],
+   "kind": "reservation",
+   "lat": 45.354,
+   "lon": -84.979,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Little Traverse Bay Reservation."
+  },
+  {
+   "id": "little-river",
+   "name": "Little River Band of Ottawa Indians, Michigan",
+   "language": "ottawa",
+   "historic": [
+    "ottawa"
+   ],
+   "kind": "reservation",
+   "lat": 44.286,
+   "lon": -86.249,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Little River Reservation."
+  },
+  {
+   "id": "ottawa-ok",
+   "name": "Ottawa Tribe of Oklahoma",
+   "language": "ottawa",
+   "historic": [
+    "ottawa"
+   ],
+   "kind": "statistical_area",
+   "lat": 36.849,
+   "lon": -94.796,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Ottawa OTSA."
+  },
+  {
+   "id": "forest-county-potawatomi",
+   "name": "Forest County Potawatomi Community, Wisconsin",
+   "language": "potawatomi",
+   "historic": [
+    "potawatomi"
+   ],
+   "kind": "reservation",
+   "lat": 45.493,
+   "lon": -88.621,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Forest County Potawatomi Community."
+  },
+  {
+   "id": "hannahville",
+   "name": "Hannahville Indian Community, Michigan",
+   "language": "potawatomi",
+   "kind": "reservation",
+   "lat": 45.779,
+   "lon": -87.433,
+   "confidence": "med",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Hannahville Indian Community. Language (Potawatomi) assigned during research; the official name does not state it."
+  },
+  {
+   "id": "match-e-be-nash-she-wish",
+   "name": "Match-E-Be-Nash-She-Wish Band of Pottawatomi",
+   "language": "potawatomi",
+   "historic": [
+    "potawatomi"
+   ],
+   "kind": "reservation",
+   "lat": 42.634,
+   "lon": -85.657,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Match-e-be-nash-she-wish Band of Pottawatomi Reservation. Official name uses the spelling \"Pottawatomi\"."
+  },
+  {
+   "id": "nottawaseppi-huron",
+   "name": "Nottawaseppi Huron Band of the Potawatomi, Michigan",
+   "language": "potawatomi",
+   "historic": [
+    "potawatomi"
+   ],
+   "kind": "reservation",
+   "lat": 42.105,
+   "lon": -85.261,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Huron Potawatomi Reservation."
+  },
+  {
+   "id": "pokagon",
+   "name": "Pokagon Band of Potawatomi Indians, Michigan and Indiana",
+   "language": "potawatomi",
+   "historic": [
+    "potawatomi"
+   ],
+   "kind": "reservation",
+   "lat": 41.777,
+   "lon": -86.715,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Pokagon Reservation."
+  },
+  {
+   "id": "prairie-band-potawatomi",
+   "name": "Prairie Band Potawatomi Nation",
+   "language": "potawatomi",
+   "historic": [
+    "potawatomi"
+   ],
+   "kind": "reservation",
+   "lat": 39.347,
+   "lon": -95.84,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Prairie Band of Potawatomi Nation Reservation."
+  },
+  {
+   "id": "citizen-potawatomi",
+   "name": "Citizen Potawatomi Nation, Oklahoma",
+   "language": "potawatomi",
+   "historic": [
+    "potawatomi"
+   ],
+   "kind": "statistical_area",
+   "lat": 35.205,
+   "lon": -97.077,
+   "confidence": "med",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Citizen Potawatomi Nation-Absentee Shawnee OTSA. OTSA shared with the Absentee-Shawnee Tribe; the point marks the shared area."
+  },
+  {
+   "id": "menominee",
+   "name": "Menominee Indian Tribe of Wisconsin",
+   "language": "menominee",
+   "historic": [
+    "menominee"
+   ],
+   "kind": "reservation",
+   "lat": 44.991,
+   "lon": -88.669,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Menominee Reservation."
+  },
+  {
+   "id": "ho-chunk",
+   "name": "Ho-Chunk Nation of Wisconsin",
+   "language": "hochunk",
+   "historic": [
+    "hochunk"
+   ],
+   "kind": "reservation",
+   "lat": 43.363,
+   "lon": -89.755,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Ho-Chunk Nation Reservation."
+  },
+  {
+   "id": "winnebago",
+   "name": "Winnebago Tribe of Nebraska",
+   "language": "hochunk",
+   "kind": "reservation",
+   "lat": 42.226,
+   "lon": -96.596,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Winnebago Reservation."
+  },
+  {
+   "id": "sac-fox-mississippi-iowa",
+   "name": "Sac & Fox Tribe of the Mississippi in Iowa",
+   "language": "meskwaki",
+   "historic": [
+    "meskwaki"
+   ],
+   "kind": "reservation",
+   "lat": 41.98,
+   "lon": -92.65,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Sac and Fox/Meskwaki Settlement."
+  },
+  {
+   "id": "sac-fox-missouri",
+   "name": "Sac & Fox Nation of Missouri in Kansas and Nebraska",
+   "language": "sauk",
+   "historic": [
+    "meskwaki"
+   ],
+   "kind": "reservation",
+   "lat": 40.009,
+   "lon": -95.513,
+   "confidence": "med",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Sac and Fox Nation Reservation. Match inferred from the Kansas–Nebraska reservation name. Language (Sauk) assigned during research."
+  },
+  {
+   "id": "sac-fox-oklahoma",
+   "name": "Sac & Fox Nation, Oklahoma",
+   "language": "sauk",
+   "historic": [
+    "meskwaki"
+   ],
+   "kind": "statistical_area",
+   "lat": 35.717,
+   "lon": -96.78,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Sac and Fox OTSA. Language (Sauk) assigned during research."
+  },
+  {
+   "id": "kickapoo-kansas",
+   "name": "Kickapoo Tribe of Indians of the Kickapoo Reservation in Kansas",
+   "language": "kickapoo",
+   "historic": [
+    "kickapoo"
+   ],
+   "kind": "reservation",
+   "lat": 39.675,
+   "lon": -95.611,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Kickapoo (KS) Reservation."
+  },
+  {
+   "id": "kickapoo-oklahoma",
+   "name": "Kickapoo Tribe of Oklahoma",
+   "language": "kickapoo",
+   "historic": [
+    "kickapoo"
+   ],
+   "kind": "statistical_area",
+   "lat": 35.548,
+   "lon": -97.061,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Kickapoo OTSA."
+  },
+  {
+   "id": "miami-oklahoma",
+   "name": "Miami Tribe of Oklahoma",
+   "language": "mi-miami",
+   "historic": [
+    "miami"
+   ],
+   "kind": "statistical_area",
+   "lat": 36.97,
+   "lon": -94.962,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Miami OTSA."
+  },
+  {
+   "id": "peoria",
+   "name": "Peoria Tribe of Indians of Oklahoma",
+   "language": "miami-illinois",
+   "historic": [
+    "illinois"
+   ],
+   "kind": "statistical_area",
+   "lat": 36.901,
+   "lon": -94.744,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Peoria OTSA. Linked to the Illinois Confederacy, whose name in nations.json includes Peoria."
+  },
+  {
+   "id": "eastern-shawnee",
+   "name": "Eastern Shawnee Tribe of Oklahoma",
+   "language": "shawnee",
+   "historic": [
+    "shawnee"
+   ],
+   "kind": "statistical_area",
+   "lat": 36.85,
+   "lon": -94.689,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Eastern Shawnee OTSA."
+  },
+  {
+   "id": "absentee-shawnee",
+   "name": "Absentee-Shawnee Tribe of Indians of Oklahoma",
+   "language": "shawnee",
+   "historic": [
+    "shawnee"
+   ],
+   "kind": "statistical_area",
+   "lat": 35.205,
+   "lon": -97.077,
+   "confidence": "med",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Citizen Potawatomi Nation-Absentee Shawnee OTSA. OTSA shared with the Citizen Potawatomi Nation; the point marks the shared area."
+  },
+  {
+   "id": "iowa-kansas-nebraska",
+   "name": "Iowa Tribe of Kansas and Nebraska",
+   "language": "chiwere",
+   "kind": "reservation",
+   "lat": 39.997,
+   "lon": -95.382,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Iowa (KS-NE) Reservation."
+  },
+  {
+   "id": "iowa-oklahoma",
+   "name": "Iowa Tribe of Oklahoma",
+   "language": "chiwere",
+   "kind": "statistical_area",
+   "lat": 35.818,
+   "lon": -97.079,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Iowa OTSA."
+  },
+  {
+   "id": "otoe-missouria",
+   "name": "Otoe-Missouria Tribe of Indians, Oklahoma",
+   "language": "chiwere",
+   "historic": [
+    "chiwere"
+   ],
+   "kind": "statistical_area",
+   "lat": 36.422,
+   "lon": -97.087,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Otoe-Missouria OTSA."
+  },
+  {
+   "id": "omaha",
+   "name": "Omaha Tribe of Nebraska",
+   "language": "omaha-ponca",
+   "historic": [
+    "dhegiha"
+   ],
+   "kind": "reservation",
+   "lat": 42.097,
+   "lon": -96.531,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Omaha Reservation."
+  },
+  {
+   "id": "ponca-oklahoma",
+   "name": "Ponca Tribe of Indians of Oklahoma",
+   "language": "omaha-ponca",
+   "kind": "statistical_area",
+   "lat": 36.588,
+   "lon": -97.098,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Ponca OTSA."
+  },
+  {
+   "id": "osage",
+   "name": "The Osage Nation",
+   "language": "osage-kansa",
+   "historic": [
+    "dhegiha"
+   ],
+   "kind": "reservation",
+   "lat": 36.624,
+   "lon": -96.408,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Osage Reservation."
+  },
+  {
+   "id": "kaw",
+   "name": "Kaw Nation, Oklahoma",
+   "language": "osage-kansa",
+   "kind": "statistical_area",
+   "lat": 36.89,
+   "lon": -97.022,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Kaw OTSA."
+  },
+  {
+   "id": "quapaw",
+   "name": "Quapaw Nation",
+   "language": "quapaw",
+   "historic": [
+    "dhegiha"
+   ],
+   "kind": "statistical_area",
+   "lat": 36.963,
+   "lon": -94.766,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Quapaw OTSA."
+  },
+  {
+   "id": "lower-sioux",
+   "name": "Lower Sioux Indian Community in the State of Minnesota",
+   "language": "dakota",
+   "kind": "reservation",
+   "lat": 44.531,
+   "lon": -94.991,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Lower Sioux Indian Community."
+  },
+  {
+   "id": "upper-sioux",
+   "name": "Upper Sioux Community, Minnesota",
+   "language": "dakota",
+   "kind": "reservation",
+   "lat": 44.76,
+   "lon": -95.5,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Upper Sioux Community."
+  },
+  {
+   "id": "prairie-island",
+   "name": "Prairie Island Indian Community in the State of Minnesota",
+   "language": "dakota",
+   "kind": "reservation",
+   "lat": 44.635,
+   "lon": -92.657,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Prairie Island Indian Community."
+  },
+  {
+   "id": "shakopee-mdewakanton",
+   "name": "Shakopee Mdewakanton Sioux Community of Minnesota",
+   "language": "dakota",
+   "kind": "reservation",
+   "lat": 44.754,
+   "lon": -93.453,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Shakopee Mdewakanton Sioux Community."
+  },
+  {
+   "id": "santee-sioux",
+   "name": "Santee Sioux Nation, Nebraska",
+   "language": "dakota",
+   "kind": "reservation",
+   "lat": 42.711,
+   "lon": -97.822,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Santee Reservation."
+  },
+  {
+   "id": "flandreau-santee",
+   "name": "Flandreau Santee Sioux Tribe of South Dakota",
+   "language": "dakota",
+   "kind": "reservation",
+   "lat": 44.084,
+   "lon": -96.59,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Flandreau Reservation."
+  },
+  {
+   "id": "sisseton-wahpeton",
+   "name": "Sisseton-Wahpeton Oyate of the Lake Traverse Reservation, South Dakota",
+   "language": "dakota",
+   "kind": "reservation",
+   "lat": 45.644,
+   "lon": -97.092,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Lake Traverse Reservation."
+  },
+  {
+   "id": "wyandotte",
+   "name": "Wyandotte Nation",
+   "language": "huron",
+   "kind": "statistical_area",
+   "lat": 36.796,
+   "lon": -94.707,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Wyandotte OTSA. Language (Huron-Wendat) assigned during research."
+  },
+  {
+   "id": "seneca-nation",
+   "name": "Seneca Nation of Indians",
+   "language": "haudenosaunee",
+   "kind": "reservation",
+   "lat": 42.124,
+   "lon": -78.67,
+   "confidence": "med",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Allegany Reservation. The Nation also holds the Cattaraugus and Oil Springs reservations. Match inferred; the Census name does not name the Nation."
+  },
+  {
+   "id": "tonawanda-seneca",
+   "name": "Tonawanda Band of Seneca",
+   "language": "haudenosaunee",
+   "kind": "reservation",
+   "lat": 43.074,
+   "lon": -78.453,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Tonawanda Reservation."
+  },
+  {
+   "id": "oneida-indian-nation",
+   "name": "Oneida Indian Nation",
+   "language": "haudenosaunee",
+   "kind": "reservation",
+   "lat": 43.072,
+   "lon": -75.696,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Oneida Indian Nation Reservation."
+  },
+  {
+   "id": "oneida-nation-wisconsin",
+   "name": "Oneida Nation",
+   "language": "haudenosaunee",
+   "kind": "reservation",
+   "lat": 44.49,
+   "lon": -88.2,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Oneida (WI) Reservation."
+  },
+  {
+   "id": "onondaga",
+   "name": "Onondaga Nation",
+   "language": "haudenosaunee",
+   "kind": "reservation",
+   "lat": 42.926,
+   "lon": -76.153,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Onondaga Nation Reservation."
+  },
+  {
+   "id": "cayuga",
+   "name": "Cayuga Nation",
+   "language": "haudenosaunee",
+   "kind": "statistical_area",
+   "lat": 42.79,
+   "lon": -76.715,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Cayuga Nation TDSA."
+  },
+  {
+   "id": "tuscarora",
+   "name": "Tuscarora Nation",
+   "language": "iroquoian",
+   "kind": "reservation",
+   "lat": 43.163,
+   "lon": -78.951,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Tuscarora Nation Reservation. Tuscarora is an Iroquoian language outside the Five Nations branch in languages.json, so the family is used."
+  },
+  {
+   "id": "st-regis-mohawk",
+   "name": "Saint Regis Mohawk Tribe",
+   "language": "haudenosaunee",
+   "kind": "reservation",
+   "lat": 44.979,
+   "lon": -74.643,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census St. Regis Mohawk Reservation."
+  },
+  {
+   "id": "seneca-cayuga",
+   "name": "Seneca-Cayuga Nation",
+   "language": "haudenosaunee",
+   "kind": "statistical_area",
+   "lat": 36.692,
+   "lon": -94.679,
+   "confidence": "high",
+   "source": "census_tiger2024_aiannh",
+   "name_source": "fr2026_tribes",
+   "note": "Point: Census Seneca-Cayuga OTSA."
+  }
+ ]
+}

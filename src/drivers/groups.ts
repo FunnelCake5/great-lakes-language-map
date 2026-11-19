@@ -21,7 +21,7 @@ export const LAYERS: LayerDef[] = [
   { id: 'american', label: 'American', drivers: ['american'], colour: DRIVER.american },
   { id: 'other', label: 'Other events', drivers: ['migration', 'european', 'war'], colour: DRIVER.migration },
   { id: 'disease', label: 'Disease', drivers: ['disease'], colour: DRIVER.disease, placeholder: 'No data yet' },
-  { id: 'placenames', label: 'Place names', drivers: [], colour: '#5C4631', placeholder: 'Phase 7' },
+  { id: 'placenames', label: 'Place names', drivers: [], colour: '#5C4631' },
 ];
 
 export const driverColour = (d: string): string => (DRIVER as Record<string, string>)[d] ?? DRIVER.migration;

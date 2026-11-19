@@ -53,6 +53,7 @@ Items that need a source (`needs_source`) or are disputed (`contested`). Fix the
 ## Other known gaps
 - Maize-line keyframes: no sourced coordinates yet; render as schematic. The two illustrative keyframes in `data/drivers.json` are marked `needs_source`.
 - TODO(data): disease layer has no events or sources yet; the toggle shows a placeholder.
+- Present-day nations (`data/today.json`): 66 US nations from the 2026 Federal Register list, placed at Census 2024 reservation or tribal-statistical-area points. TODO(data): Canadian First Nations (e.g. Anishinaabe, Potawatomi, Odawa and Haudenosaunee communities in Ontario); the Shawnee Tribe (no Census area of its own); the Ponca Tribe of Nebraska and Kickapoo Traditional Tribe of Texas (outside the map extent); sourced lineage links for name synonyms (Chippewa = Ojibwe, Sac = Sauk, Iowa = Ioway, Sioux = Dakota, Winnebago = Ho-Chunk, Wyandotte = Huron-Wendat); reviewer check of each `language`.
 - Population figures per nation over time: not yet sourced.
 - Iroquois raid 1682–83 and Fox portage 1660 come only from Sultzman.
 - TODO(data): nations hold their last recorded position until 1900 (SPEC interpolation rule). Several tracks end long before then (e.g. `neutral` 1651, `huron` 1701, `menominee` and `haudenosaunee` 1600), so later keyframes or end-of-track records are needed.

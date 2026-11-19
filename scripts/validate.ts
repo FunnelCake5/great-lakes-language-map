@@ -64,6 +64,7 @@ const files: [string, any, string][] = [
   ['events.json', raw.events, 'events'],
   ['placenames.json', raw.placenames, 'placenames'],
   ['chapters.json', raw.chapters, 'chapters'],
+  ['today.json', raw.today, 'nations'],
 ];
 for (const [file, json, key] of files) {
   const shapeOk = key === 'sources' ? isObj(json?.[key]) : Array.isArray(json?.[key]);
@@ -81,6 +82,7 @@ const d: Dataset = {
   placenames: raw.placenames.placenames,
   chapters: raw.chapters.chapters,
   drivers: raw.drivers,
+  today: raw.today.nations,
 };
 
 // ---------- sources ----------
@@ -326,10 +328,44 @@ for (let i = 1; i < d.chapters.length; i++) {
   }
 }
 
-// ---------- rule 7: respectful framing ----------
-// "extinct" is reserved for languages with no speakers; never for peoples.
+// Rule 7 wording check, shared by the sections below.
 const banned = /\b(vanish(ed|ing)?|extinct|extinction|died out)\b/i;
 const scan = (where: string, text: unknown) => isStr(text) && banned.test(text) && err(where, `wording "${text.match(banned)![0]}" is not allowed for peoples (rule 7)`);
+
+// ---------- today (present-day nations) ----------
+const todayIds = new Set<string>();
+d.today.forEach((t: any, i) => {
+  const w = `today.json nations[${i}]${isStr(t?.id) ? ` (${t.id})` : ''}`;
+  if (!isObj(t)) return err(w, 'must be an object');
+  unknownKeys(w, t, ['id', 'name', 'language', 'historic', 'kind', 'lat', 'lon', 'confidence', 'source', 'name_source', 'note']);
+  if (req(w, t, 'id', 'string')) {
+    if (todayIds.has(t.id)) err(w, 'duplicate id');
+    todayIds.add(t.id);
+  }
+  req(w, t, 'name', 'string');
+  if (req(w, t, 'language', 'string') && !langById.has(t.language)) err(w, `language "${t.language}" not in languages.json`);
+  if (t.historic !== undefined) {
+    if (!Array.isArray(t.historic)) err(w, 'historic must be an array of nation ids');
+    else t.historic.forEach((h: unknown) => { if (!isStr(h) || !nationIds.has(h)) err(w, `historic "${h}" is not a nation id`); });
+  }
+  oneOf(w, 'kind', t.kind, ['headquarters', 'reservation', 'community', 'statistical_area', 'trust_land'] as const);
+  if (t.name_source !== undefined) {
+    sourceRef(`${w}.name_source`, t.name_source);
+    if (t.name_source === NEEDS_SOURCE) err(w, 'name_source must be a real source');
+  }
+  coords(w, t);
+  oneOf(w, 'confidence', t.confidence, CONFIDENCE);
+  sourceRef(w, t.source);
+  // Rule 1 + phase 7: present-day records must carry a real source.
+  if (t.source === NEEDS_SOURCE) err(w, 'present-day nations must have a real source, not needs_source');
+  weakRule(w, t.source, t.confidence);
+  optStr(w, t, 'note');
+  scan(`${w}.name`, t.name);
+  scan(`${w}.note`, t.note);
+});
+
+// ---------- rule 7: respectful framing ----------
+// "extinct" is reserved for languages with no speakers; never for peoples.
 d.nations.forEach((n: any) => {
   scan(`nations (${n.id}).name`, n.name);
   [...(n.positions ?? []), ...(n.alt_positions ?? []), ...(n.splits ?? []), ...(n.merges ?? [])]

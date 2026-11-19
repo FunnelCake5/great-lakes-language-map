@@ -1,10 +1,11 @@
 // Tap card for a nation: who they are, what they speak (via the language
 // tree, rule 6), where they are in the current year and on what evidence.
-import type { Dataset, HistEvent, Language, Nation, Source } from '../data/types';
+import type { Dataset, HistEvent, Language, Nation, PlaceName, Source, TodayNation } from '../data/types';
 import { NEEDS_SOURCE } from '../data/types';
 import type { LanguageIndex } from '../data/lang';
 import { FAMILY } from '../theme';
 import { LAYERS, driverColour } from '../drivers/groups';
+import { formatMeaning } from '../today/layer';
 import type { Keyframe, Sample, Tracks } from '../nations/track';
 
 function h<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, string> = {}, ...children: (Node | string | null | false)[]) {
@@ -111,6 +112,55 @@ export class NationCard {
 
   private shownLanguage: string | null = null;
   get languageId() { return this.shownLanguage; }
+
+  private langLinks(id: string) {
+    const path = this.lang.path(id);
+    return path.flatMap((a, i) => {
+      const b = h('button', { type: 'button', class: `path-link${i === path.length - 1 ? ' lang-leaf' : ''}` }, a.name);
+      b.addEventListener('click', () => this.onLanguage(a.id));
+      return [i ? ' › ' : '', b];
+    });
+  }
+
+  private render(parts: (HTMLElement | null)[]) {
+    this.shownId = null;
+    this.shownEvent = null;
+    this.shownLanguage = null;
+    this.body.replaceChildren(...parts.filter((x): x is HTMLElement => x !== null));
+    this.el.hidden = false;
+  }
+
+  /** Place-name card (Today): the word, its language and meaning, and its source. */
+  showPlace(p: PlaceName, swatch: string) {
+    // The language this word comes from, and (where the meaning says so) whom it names.
+    this.render([
+      h('header', { class: 'card-head' }, h('span', { class: 'card-swatch', style: `background:${swatch}` }), h('h2', {}, p.name)),
+      h('p', { class: 'card-lang' }, h('span', { class: 'card-k' }, 'From '), ...this.langLinks(p.language)),
+      p.meaning ? h('p', { class: 'card-phase' }, h('span', { class: 'card-k' }, 'Meaning '), `${formatMeaning(p.meaning)} `, badge(p.confidence))
+        : h('p', { class: 'card-note-text' }, 'Meaning not recorded in the dataset. ', badge(p.confidence)),
+      p.note ? h('p', { class: 'card-note-text' }, p.note) : null,
+      h('div', { class: 'frame' }, h('div', { class: 'frame-head' }, h('strong', {}, 'Source')), sourceEl(p.source, this.data.sources)),
+      p.source === NEEDS_SOURCE ? h('p', { class: 'card-warn' }, 'This place name has no source yet. It is shown dashed and listed in the data gaps.') : null,
+    ]);
+  }
+
+  /** Present-day nation card (Today). */
+  showToday(n: TodayNation, swatch: string) {
+    const historic = (n.historic ?? []).map((id) => {
+      const b = h('button', { type: 'button', class: 'actor' }, this.tracks.byId.get(id)?.nation.name ?? id);
+      b.addEventListener('click', () => this.onNation(id));
+      return b;
+    });
+    this.render([
+      h('header', { class: 'card-head' }, h('span', { class: 'card-swatch', style: `background:${swatch}` }), h('h2', {}, n.name)),
+      h('p', { class: 'card-lang' }, h('span', { class: 'card-k' }, 'Language '), ...this.langLinks(n.language)),
+      h('p', {}, h('span', { class: 'card-k' }, 'Point marks '), { headquarters: 'the nation’s headquarters', reservation: 'the nation’s reservation or community (Census internal point)', community: 'a community', statistical_area: 'a Census tribal statistical area, not a reservation boundary (internal point)', trust_land: 'off-reservation trust land (Census internal point)' }[n.kind], ' ', badge(n.confidence)),
+      historic.length ? h('p', { class: 'card-actors' }, h('span', { class: 'card-k' }, 'On the historical map as '), ...historic) : null,
+      n.note ? h('p', { class: 'card-note-text' }, n.note) : null,
+      h('div', { class: 'frame' }, h('div', { class: 'frame-head' }, h('strong', {}, 'Location source')), sourceEl(n.source, this.data.sources)),
+      n.name_source ? h('div', { class: 'frame' }, h('div', { class: 'frame-head' }, h('strong', {}, 'Official name')), sourceEl(n.name_source, this.data.sources)) : null,
+    ]);
+  }
 
   /** Language card: what the node is, its status and note, and the nations under it. */
   showLanguage(l: Language, nations: readonly Nation[], swatch: string | null) {

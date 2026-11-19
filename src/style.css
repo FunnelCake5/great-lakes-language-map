@@ -620,3 +620,42 @@ html, body {
   cursor: pointer;
 }
 .path-link.lang-leaf { font-weight: 600; }
+
+/* ---------- Today ---------- */
+.placeholder-note.today {
+  top: auto;
+  left: auto;
+  right: 14px;
+  bottom: 14px;
+  transform: none;
+  max-width: min(320px, 70%);
+  font-size: 13px;
+  text-align: left;
+  pointer-events: none;
+}
+.placeholder-note.today strong { font-size: 15px; }
+.placeholder-note code { font-size: 11px; font-style: normal; }
+.today-title {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 3.5px;
+  stroke-linejoin: round;
+}
+.today-sub {
+  font-family: var(--serif);
+  font-size: 11px;
+  font-style: italic;
+  fill: var(--sepia-light);
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.today-needs { fill: none; stroke: #5C4631; stroke-width: 1; stroke-dasharray: 3 2.5; }
+.today-item.selected .today-title { text-decoration: underline; }
+.today-leader { stroke: #8C7358; stroke-width: 0.8; }
