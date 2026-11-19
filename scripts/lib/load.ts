@@ -18,6 +18,7 @@ export function loadRaw() {
     nations: readJson('nations.json') as any,
     events: readJson('events.json') as any,
     placenames: readJson('placenames.json') as any,
+    chapters: readJson('chapters.json') as any,
   };
 }
 
@@ -29,5 +30,6 @@ export function loadDataset(): Dataset {
     nations: r.nations.nations,
     events: r.events.events,
     placenames: r.placenames.placenames,
+    chapters: r.chapters.chapters,
   };
 }

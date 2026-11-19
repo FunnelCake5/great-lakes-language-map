@@ -5,6 +5,9 @@ import { drawBasemap, loadBasemap } from './map/basemap';
 import type { Basemap } from './map/basemap';
 import { drawLabels } from './map/labels';
 import { makeProjection } from './map/projection';
+import { Clock } from './time/clock';
+import { readHash, syncHash } from './time/url';
+import { mountTimebar } from './ui/timebar';
 
 const container = document.getElementById('map') as HTMLDivElement;
 const canvas = document.getElementById('basemap') as HTMLCanvasElement;
@@ -48,6 +51,16 @@ function render(map: Basemap) {
 
 async function start() {
   summarise();
+  const clock = new Clock(readHash());
+  mountTimebar(
+    document.getElementById('timebar')!,
+    document.getElementById('readout')!,
+    clock,
+    dataset.events,
+    dataset.chapters,
+  );
+  syncHash(clock);
+  // Phase 3+ will subscribe the map renderer to the clock.
   try {
     const map = await loadBasemap();
     let frame = 0;

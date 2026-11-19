@@ -1,0 +1,85 @@
+{
+ "chapters": [
+  {
+   "id": "plate-0",
+   "plate": 0,
+   "title": "Before contact",
+   "year_start": 1000,
+   "year_end": 1640,
+   "status": "defined",
+   "note": "Defined in SPEC.md (Time › Chapters)."
+  },
+  {
+   "id": "plate-1",
+   "plate": 1,
+   "title": null,
+   "year_start": null,
+   "year_end": null,
+   "status": "placeholder",
+   "note": "TODO(data): title and year range of Mascouten plate 1 not yet supplied."
+  },
+  {
+   "id": "plate-2",
+   "plate": 2,
+   "title": null,
+   "year_start": null,
+   "year_end": null,
+   "status": "placeholder",
+   "note": "TODO(data): title and year range of Mascouten plate 2 not yet supplied."
+  },
+  {
+   "id": "plate-3",
+   "plate": 3,
+   "title": null,
+   "year_start": null,
+   "year_end": null,
+   "status": "placeholder",
+   "note": "TODO(data): title and year range of Mascouten plate 3 not yet supplied."
+  },
+  {
+   "id": "plate-4",
+   "plate": 4,
+   "title": null,
+   "year_start": null,
+   "year_end": null,
+   "status": "placeholder",
+   "note": "TODO(data): title and year range of Mascouten plate 4 not yet supplied."
+  },
+  {
+   "id": "plate-5",
+   "plate": 5,
+   "title": null,
+   "year_start": null,
+   "year_end": null,
+   "status": "placeholder",
+   "note": "TODO(data): title and year range of Mascouten plate 5 not yet supplied."
+  },
+  {
+   "id": "plate-6",
+   "plate": 6,
+   "title": null,
+   "year_start": null,
+   "year_end": null,
+   "status": "placeholder",
+   "note": "TODO(data): title and year range of Mascouten plate 6 not yet supplied."
+  },
+  {
+   "id": "plate-7",
+   "plate": 7,
+   "title": null,
+   "year_start": null,
+   "year_end": null,
+   "status": "placeholder",
+   "note": "TODO(data): title and year range of Mascouten plate 7 not yet supplied."
+  },
+  {
+   "id": "plate-8",
+   "plate": 8,
+   "title": null,
+   "year_start": null,
+   "year_end": null,
+   "status": "placeholder",
+   "note": "TODO(data): title and year range of Mascouten plate 8 not yet supplied."
+  }
+ ]
+}

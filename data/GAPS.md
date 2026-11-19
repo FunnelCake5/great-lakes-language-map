@@ -40,6 +40,16 @@ Items that need a source (`needs_source`) or are disputed (`contested`). Fix the
 - nation `wea`: 2 positions
 - event `allouez-mascouten`: Allouez visits; Mascouten identify as the Assistaeronon
 
+## Chapter placeholders
+- chapter `plate-1` (Plate 1): title and years not yet supplied
+- chapter `plate-2` (Plate 2): title and years not yet supplied
+- chapter `plate-3` (Plate 3): title and years not yet supplied
+- chapter `plate-4` (Plate 4): title and years not yet supplied
+- chapter `plate-5` (Plate 5): title and years not yet supplied
+- chapter `plate-6` (Plate 6): title and years not yet supplied
+- chapter `plate-7` (Plate 7): title and years not yet supplied
+- chapter `plate-8` (Plate 8): title and years not yet supplied
+
 ## Other known gaps
 - Maize-line keyframes: no sourced coordinates yet; render as schematic.
 - Population figures per nation over time: not yet sourced.

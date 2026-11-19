@@ -63,6 +63,7 @@ const files: [string, any, string][] = [
   ['nations.json', raw.nations, 'nations'],
   ['events.json', raw.events, 'events'],
   ['placenames.json', raw.placenames, 'placenames'],
+  ['chapters.json', raw.chapters, 'chapters'],
 ];
 for (const [file, json, key] of files) {
   const shapeOk = key === 'sources' ? isObj(json?.[key]) : Array.isArray(json?.[key]);
@@ -78,6 +79,7 @@ const d: Dataset = {
   nations: raw.nations.nations,
   events: raw.events.events,
   placenames: raw.placenames.placenames,
+  chapters: raw.chapters.chapters,
 };
 
 // ---------- sources ----------
@@ -242,6 +244,38 @@ d.placenames.forEach((p: any, i) => {
   optStr(w, p, 'note');
 });
 
+// ---------- chapters ----------
+const chapterIds = new Set<string>();
+const plates = new Set<number>();
+d.chapters.forEach((c: any, i) => {
+  const w = `chapters[${i}]${isStr(c?.id) ? ` (${c.id})` : ''}`;
+  if (!isObj(c)) return err(w, 'must be an object');
+  unknownKeys(w, c, ['id', 'plate', 'title', 'year_start', 'year_end', 'status', 'note']);
+  if (req(w, c, 'id', 'string')) {
+    if (chapterIds.has(c.id)) err(w, 'duplicate id');
+    chapterIds.add(c.id);
+  }
+  if (!isNum(c.plate) || !Number.isInteger(c.plate) || c.plate < 0) err(w, 'plate must be a non-negative integer');
+  else if (plates.has(c.plate)) err(w, `duplicate plate ${c.plate}`);
+  else plates.add(c.plate);
+  oneOf(w, 'status', c.status, ['defined', 'placeholder'] as const);
+  optStr(w, c, 'note');
+  if (c.status === 'defined') {
+    req(w, c, 'title', 'string');
+    year(w, 'year_start', c.year_start);
+    year(w, 'year_end', c.year_end);
+    if (isNum(c.year_start) && isNum(c.year_end) && c.year_end < c.year_start) err(w, 'year_end is before year_start');
+  } else if (c.status === 'placeholder') {
+    // Rule 1: a placeholder must not carry made-up history.
+    for (const k of ['title', 'year_start', 'year_end']) {
+      if (c[k] !== null) err(w, `placeholder chapter must have ${k}: null until sourced`);
+    }
+  }
+});
+for (let i = 1; i < d.chapters.length; i++) {
+  if ((d.chapters[i] as any).plate < (d.chapters[i - 1] as any).plate) err(`chapters[${i}]`, 'plates must be in ascending order');
+}
+
 // ---------- rule 7: respectful framing ----------
 // "extinct" is reserved for languages with no speakers; never for peoples.
 const banned = /\b(vanish(ed|ing)?|extinct|extinction|died out)\b/i;
@@ -263,7 +297,7 @@ if (errors.length === 0) {
 }
 
 // ---------- report ----------
-const counts = `${d.nations.length} nations · ${d.events.length} events · ${d.languages.length} languages · ${d.placenames.length} place names · ${sourceKeys.size} sources`;
+const counts = `${d.nations.length} nations · ${d.events.length} events · ${d.languages.length} languages · ${d.placenames.length} place names · ${d.chapters.length} chapters · ${sourceKeys.size} sources`;
 for (const w of warnings) console.warn(`  ⚠ ${w}`);
 if (errors.length) {
   for (const e of errors) console.error(`  ✗ ${e}`);
