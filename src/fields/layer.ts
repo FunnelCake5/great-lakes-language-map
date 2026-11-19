@@ -14,11 +14,10 @@ import type { Family, LanguageIndex } from '../data/lang';
 import type { Basemap } from '../map/basemap';
 import { landClip } from '../map/basemap';
 import type { Tracks } from '../nations/track';
-import { FAMILY } from '../theme';
+import type { Palette } from '../data/palette';
 import type { Grid, KdePoint } from './kde';
 import { accumulate, intensity, makeGrid } from './kde';
 
-const FAMILIES: Family[] = ['algonquian', 'siouan', 'iroquoian'];
 /** Iroquoian is context only: present but quieter. */
 const FAMILY_SCALE: Record<Family, number> = { algonquian: 1, siouan: 1, iroquoian: 0.55 };
 
@@ -36,7 +35,9 @@ function hexRgb(hex: string): [number, number, number] {
   const n = parseInt(hex.slice(1), 16);
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
 }
-const RGB = Object.fromEntries(FAMILIES.map((f) => [f, hexRgb(FAMILY[f])])) as Record<Family, [number, number, number]>;
+
+/** One density group: a family, branch or language depending on the zoom level. */
+interface Group { rgb: [number, number, number]; scale: number; pts: KdePoint[] }
 
 function pxPerKm(projection: GeoProjection): number {
   const a: [number, number] = [-85, 42];
@@ -57,7 +58,10 @@ export class FieldLayer {
   private size = { width: 0, height: 0, dpr: 1 };
   private projection: GeoProjection | null = null;
 
-  constructor(private tracks: Tracks, private lang: LanguageIndex) {}
+  /** Language-tree focus: when set, only these nations feed the fields. */
+  focus: Set<string> | null = null;
+
+  constructor(private tracks: Tracks, private lang: LanguageIndex, private palette: Palette) {}
 
   /** Call when the map size or projection changes. */
   resize(projection: GeoProjection, map: Basemap, width: number, height: number, dpr: number) {
@@ -87,12 +91,22 @@ export class FieldLayer {
     d.fillRect(0, 0, W, H);
   }
 
-  /** Points per family, split into solid and ghost (contested). */
+  /** Points per group (family/branch/language), split into solid and ghost (contested). */
   private points(projection: GeoProjection, year: number) {
     const h0 = BANDWIDTH_KM * pxPerKm(projection);
-    const solid: Record<Family, KdePoint[]> = { algonquian: [], siouan: [], iroquoian: [] };
-    const ghost: Record<Family, KdePoint[]> = { algonquian: [], siouan: [], iroquoian: [] };
+    const solid = new Map<string, Group>();
+    const ghost = new Map<string, Group>();
+    const groupFor = (bucket: Map<string, Group>, language: string, fam: Family) => {
+      const key = this.palette.groupKey(language);
+      let g = bucket.get(key);
+      if (!g) {
+        g = { rgb: hexRgb(this.palette.colourOf(language)), scale: FAMILY_SCALE[fam], pts: [] };
+        bucket.set(key, g);
+      }
+      return g;
+    };
     for (const [id, t] of this.tracks.byId) {
+      if (this.focus && !this.focus.has(id)) continue;
       const s = this.tracks.sample(id, year);
       const fam = this.lang.family(t.nation.language);
       if (!s || !fam) continue;
@@ -104,43 +118,45 @@ export class FieldLayer {
       const p = projection([s.lon, s.lat]);
       if (!p) continue;
       if (s.confidence !== 'contested') {
-        solid[fam].push({ x: p[0], y: p[1], w, h });
+        groupFor(solid, t.nation.language, fam).pts.push({ x: p[0], y: p[1], w, h });
         continue;
       }
       const alt = this.tracks.sampleAlt(id, year);
       const ap = alt && projection([alt.lon, alt.lat]);
       const options = ap ? [p, ap] : [p];
-      for (const o of options) ghost[fam].push({ x: o[0], y: o[1], w: w / options.length, h });
+      const g = groupFor(ghost, t.nation.language, fam);
+      for (const o of options) g.pts.push({ x: o[0], y: o[1], w: w / options.length, h });
     }
     return { solid, ghost };
   }
 
-  /** Blend per-family densities into one low-res RGBA image. */
-  private blend(points: Record<Family, KdePoint[]>, alpha: number): ImageData | null {
-    if (!FAMILIES.some((f) => points[f].length)) return null;
+  /** Blend per-group densities into one low-res RGBA image. */
+  private blend(groups: Map<string, Group>, alpha: number): ImageData | null {
+    const list = [...groups.values()].filter((g) => g.pts.length);
+    if (!list.length) return null;
     const { width, height } = this.size;
-    const grids = {} as Record<Family, Grid>;
-    for (const f of FAMILIES) {
-      grids[f] = makeGrid(width, height, CELL_PX);
-      accumulate(grids[f], points[f]);
-    }
-    const { cols, rows } = grids.algonquian;
+    const grids: Grid[] = list.map((g) => {
+      const grid = makeGrid(width, height, CELL_PX);
+      accumulate(grid, g.pts);
+      return grid;
+    });
+    const { cols, rows } = grids[0];
     const img = new ImageData(cols, rows);
     for (let i = 0; i < cols * rows; i++) {
       let keep = 1;
       let sum = 0;
-      let r = 0, g = 0, b = 0;
-      for (const f of FAMILIES) {
-        const a = intensity(grids[f].data[i], GAIN) * FAMILY_SCALE[f];
+      let r = 0, gr = 0, b = 0;
+      for (let k = 0; k < list.length; k++) {
+        const a = intensity(grids[k].data[i], GAIN) * list[k].scale;
         if (a < 0.002) continue;
         keep *= 1 - a;
         sum += a;
-        r += a * RGB[f][0]; g += a * RGB[f][1]; b += a * RGB[f][2];
+        r += a * list[k].rgb[0]; gr += a * list[k].rgb[1]; b += a * list[k].rgb[2];
       }
       if (sum === 0) continue;
       const j = i * 4;
       img.data[j] = r / sum;
-      img.data[j + 1] = g / sum;
+      img.data[j + 1] = gr / sum;
       img.data[j + 2] = b / sum;
       img.data[j + 3] = (1 - keep) * alpha * 255;
     }
