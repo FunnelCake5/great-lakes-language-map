@@ -51,7 +51,8 @@ Items that need a source (`needs_source`) or are disputed (`contested`). Fix the
 - chapter `plate-8` (Plate 8): title and years not yet supplied
 
 ## Other known gaps
-- Maize-line keyframes: no sourced coordinates yet; render as schematic.
+- Maize-line keyframes: no sourced coordinates yet; render as schematic. The two illustrative keyframes in `data/drivers.json` are marked `needs_source`.
+- TODO(data): disease layer has no events or sources yet; the toggle shows a placeholder.
 - Population figures per nation over time: not yet sourced.
 - Iroquois raid 1682–83 and Fox portage 1660 come only from Sultzman.
 - TODO(data): nations hold their last recorded position until 1900 (SPEC interpolation rule). Several tracks end long before then (e.g. `neutral` 1651, `huron` 1701, `menominee` and `haudenosaunee` 1600), so later keyframes or end-of-track records are needed.

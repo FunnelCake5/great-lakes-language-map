@@ -428,7 +428,10 @@ html, body {
   position: absolute;
   left: 14px;
   top: 112px;
-  max-width: 230px;
+  max-width: 236px;
+  max-height: calc(100% - 124px);
+  display: flex;
+  flex-direction: column;
   font: 12.5px/1.35 var(--sans);
   color: var(--sepia);
 }
@@ -455,6 +458,7 @@ html, body {
   border-radius: 6px;
 }
 .key-body[hidden] { display: none; }
+.key-body { overflow-y: auto; -webkit-overflow-scrolling: touch; min-height: 0; }
 .key-list { list-style: none; margin: 0; padding: 0; }
 .key-list li { display: flex; align-items: center; gap: 8px; min-height: 24px; }
 .key-sym { flex: none; display: inline-flex; }
@@ -473,4 +477,71 @@ html, body {
 .key-note { margin: 6px 0 0; font-size: 11px; font-style: italic; color: var(--sepia-light); }
 @media (max-width: 700px) {
   .key { top: 76px; left: 10px; max-width: min(260px, calc(100% - 20px)); }
+}
+
+/* ---------- Drivers ---------- */
+.event-label {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 11px;
+  dominant-baseline: middle;
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.event-label.conf-low, .event-label.conf-contested { opacity: 0.75; }
+.driver-label {
+  font-family: var(--serif);
+  font-size: 12px;
+  font-style: italic;
+  dominant-baseline: middle;
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.driver-label.cahokia { fill: #8A540F; }
+.driver-label.cahokia.site { font-style: normal; font-variant: small-caps; letter-spacing: 0.08em; font-weight: 600; font-size: 13px; }
+.driver-label.cahokia.gone { font-weight: 400; opacity: 0.75; }
+.driver-label.climate { fill: #1F5FA8; }
+.driver-label.climate.schematic { letter-spacing: 0.02em; }
+
+.key-sub { margin: 12px 0 6px; font: 400 14px var(--serif); font-variant: small-caps; letter-spacing: 0.1em; color: var(--sepia-light); }
+.layer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.layer-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 4px 8px;
+  border: 1px solid rgba(92, 70, 49, 0.3);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--sepia-light);
+  font: 12.5px/1.15 var(--sans);
+  text-align: left;
+  cursor: pointer;
+}
+.layer-dot { flex: none; width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--c); }
+.layer-toggle[aria-pressed="true"] { color: var(--sepia); border-color: var(--c); background: rgba(255, 255, 255, 0.35); }
+.layer-toggle[aria-pressed="true"] .layer-dot { background: var(--c); }
+.layer-toggle.placeholder { border-style: dashed; cursor: default; opacity: 0.7; flex-wrap: wrap; }
+.layer-ph { width: 100%; font-size: 10.5px; font-style: italic; }
+
+.card-swatch.diamond { border-radius: 2px; transform: rotate(45deg); width: 11px; height: 11px; }
+.card h2.event-title { font-size: 19px; line-height: 1.25; font-variant: normal; letter-spacing: 0; }
+.card-note-text { font-style: italic; color: var(--sepia-light); }
+.card-actors { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.actor {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid rgba(92, 70, 49, 0.35);
+  border-radius: 22px;
+  background: var(--paper);
+  color: var(--sepia);
+  font: 13px var(--serif);
+  font-variant: small-caps;
+  letter-spacing: 0.05em;
+  cursor: pointer;
 }

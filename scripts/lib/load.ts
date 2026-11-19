@@ -19,6 +19,7 @@ export function loadRaw() {
     events: readJson('events.json') as any,
     placenames: readJson('placenames.json') as any,
     chapters: readJson('chapters.json') as any,
+    drivers: readJson('drivers.json') as any,
   };
 }
 
@@ -31,5 +32,6 @@ export function loadDataset(): Dataset {
     events: r.events.events,
     placenames: r.placenames.placenames,
     chapters: r.chapters.chapters,
+    drivers: r.drivers,
   };
 }

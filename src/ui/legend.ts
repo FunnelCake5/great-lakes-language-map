@@ -1,6 +1,8 @@
 // Map key. Explains the encodings, including how uncertainty is drawn, and
 // switches the family fields on/off. Collapsible; no hover needed.
 import { FAMILY } from '../theme';
+import type { LayerState } from '../drivers/groups';
+import { LAYERS } from '../drivers/groups';
 
 function h<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Record<string, string> = {}, ...children: (Node | string)[]) {
   const el = document.createElement(tag);
@@ -19,7 +21,7 @@ const A = FAMILY.algonquian;
 const S = FAMILY.siouan;
 const I = FAMILY.iroquoian;
 
-export function mountLegend(host: HTMLElement, opts: { fields: boolean; onFields: (on: boolean) => void }) {
+export function mountLegend(host: HTMLElement, opts: { fields: boolean; onFields: (on: boolean) => void; layers: LayerState }) {
   const row = (sym: HTMLElement, label: string) => h('li', {}, sym, h('span', {}, label));
 
   const list = h('ul', { class: 'key-list' },
@@ -31,7 +33,28 @@ export function mountLegend(host: HTMLElement, opts: { fields: boolean; onFields
     row(svg(`<circle cx="7" cy="9" r="5" fill="${A}" fill-opacity=".18" stroke="${A}" stroke-dasharray="2.5 2"/><line x1="12" y1="9" x2="17" y2="9" stroke="${A}" stroke-dasharray="1 3" stroke-linecap="round"/><circle cx="22" cy="9" r="5" fill="${A}" fill-opacity=".18" stroke="${A}" stroke-dasharray="2.5 2"/>`), 'Contested: every option ghosted'),
     row(svg(`<pattern id="kdots" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="0.9" fill="${A}"/><circle cx="4" cy="4" r="0.9" fill="${A}"/></pattern><rect x="1" y="3" width="26" height="12" rx="6" fill="url(#kdots)"/>`), 'Contested field: stippled'),
     row(svg(`<circle cx="14" cy="9" r="5" fill="${A}"/><circle cx="14" cy="9" r="8" fill="none" stroke="#5C4631" stroke-dasharray="2 2"/>`), 'Source needed: dashed ring'),
+    row(svg(`<path d="M14 3 L20 9 L14 15 L8 9 Z" fill="#2F4C7A" stroke="#F2EBDD"/><circle cx="14" cy="9" r="8.5" fill="none" stroke="#2F4C7A" stroke-opacity=".4"/>`), 'Event: diamond, pulses while active'),
   );
+
+  // Driver layers (SPEC § Layer toggles). Placeholders are visible but disabled.
+  const layerButtons = LAYERS.map((l) => {
+    const b = h('button', {
+      type: 'button',
+      class: `layer-toggle${l.placeholder ? ' placeholder' : ''}`,
+      'aria-pressed': String(!l.placeholder && opts.layers.isOn(l.id)),
+      style: `--c:${l.colour}`,
+      ...(l.placeholder ? { 'aria-disabled': 'true' } : {}),
+    }, h('span', { class: 'layer-dot' }), h('span', { class: 'layer-name' }, l.label), ...(l.placeholder ? [h('span', { class: 'layer-ph' }, l.placeholder)] : []));
+    if (!l.placeholder) {
+      b.addEventListener('click', () => {
+        const on = !opts.layers.isOn(l.id);
+        opts.layers.set(l.id, on);
+        b.setAttribute('aria-pressed', String(on));
+      });
+    }
+    return b;
+  });
+  const layersEl = h('div', { class: 'key-layers' }, h('h3', { class: 'key-sub' }, 'Layers'), h('div', { class: 'layer-grid' }, ...layerButtons));
 
   const toggle = h('button', { type: 'button', class: 'key-toggle', 'aria-pressed': String(opts.fields) });
   const setToggle = (on: boolean) => {
@@ -47,8 +70,8 @@ export function mountLegend(host: HTMLElement, opts: { fields: boolean; onFields
 
   const note = h('p', { class: 'key-note' }, 'Fields are weighted by confidence. Population weighting waits on sourced figures.');
 
-  const body = h('div', { class: 'key-body', id: 'key-body' }, list, toggle, note);
-  const head = h('button', { type: 'button', class: 'key-head', 'aria-expanded': 'true', 'aria-controls': 'key-body' }, 'Key');
+  const body = h('div', { class: 'key-body', id: 'key-body' }, list, toggle, note, layersEl);
+  const head = h('button', { type: 'button', class: 'key-head', 'aria-expanded': 'true', 'aria-controls': 'key-body' }, 'Key & layers');
   const setOpen = (open: boolean) => {
     head.setAttribute('aria-expanded', String(open));
     body.hidden = !open;

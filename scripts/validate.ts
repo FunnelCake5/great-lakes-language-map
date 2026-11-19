@@ -80,6 +80,7 @@ const d: Dataset = {
   events: raw.events.events,
   placenames: raw.placenames.placenames,
   chapters: raw.chapters.chapters,
+  drivers: raw.drivers,
 };
 
 // ---------- sources ----------
@@ -274,6 +275,55 @@ d.chapters.forEach((c: any, i) => {
 });
 for (let i = 1; i < d.chapters.length; i++) {
   if ((d.chapters[i] as any).plate < (d.chapters[i - 1] as any).plate) err(`chapters[${i}]`, 'plates must be in ascending order');
+}
+
+// ---------- drivers ----------
+{
+  const dr: any = d.drivers;
+  const w = 'drivers.json';
+  const evRef = (where: string, id: unknown) => {
+    if (!isStr(id) || !eventIds.has(id)) err(where, `event "${id}" not in events.json`);
+  };
+  if (!isObj(dr?.cahokia) || !isObj(dr?.climate) || !isObj(dr?.disease)) err(w, 'needs cahokia, climate and disease sections');
+  else {
+    const site = dr.cahokia.site;
+    if (!isObj(site)) err(`${w} cahokia.site`, 'missing');
+    else {
+      req(`${w} cahokia.site`, site, 'name', 'string');
+      coords(`${w} cahokia.site`, site);
+      oneOf(`${w} cahokia.site`, 'confidence', site.confidence, CONFIDENCE);
+      sourceRef(`${w} cahokia.site`, site.source);
+    }
+    (dr.cahokia.phases ?? []).forEach((p: any, i: number) => {
+      const pw = `${w} cahokia.phases[${i}]`;
+      oneOf(pw, 'kind', p?.kind, ['pull', 'release'] as const);
+      evRef(pw, p?.from_event);
+      evRef(pw, p?.to_event);
+    });
+    evRef(`${w} cahokia.abandoned_event`, dr.cahokia.abandoned_event);
+    (dr.cahokia.regions ?? []).forEach((r: any, i: number) => {
+      evRef(`${w} cahokia.regions[${i}]`, r?.event);
+      req(`${w} cahokia.regions[${i}]`, r ?? {}, 'label', 'string');
+    });
+    (dr.climate.drought_events ?? []).forEach((id: unknown, i: number) => evRef(`${w} climate.drought_events[${i}]`, id));
+    const ml = dr.climate.maize_line;
+    if (!isObj(ml)) err(`${w} climate.maize_line`, 'missing');
+    else {
+      oneOf(`${w} climate.maize_line`, 'status', ml.status, ['schematic', 'sourced'] as const);
+      (ml.keyframes ?? []).forEach((k: any, i: number) => {
+        const kw = `${w} climate.maize_line.keyframes[${i}]`;
+        year(kw, 'year', k?.year);
+        if (!isNum(k?.lat) || k.lat < BOUNDS.latMin || k.lat > BOUNDS.latMax) err(kw, `lat ${k?.lat} outside bounds`);
+        oneOf(kw, 'confidence', k?.confidence, CONFIDENCE);
+        sourceRef(kw, k?.source);
+        // Rule 1: a schematic line may not pretend to be sourced, and a sourced one may not lean on needs_source.
+        if (ml.status === 'schematic' && k?.source !== NEEDS_SOURCE) err(kw, 'schematic keyframes must use source "needs_source"');
+        if (ml.status === 'schematic' && k?.confidence !== 'low') err(kw, 'schematic keyframes must be confidence "low"');
+        if (ml.status === 'sourced' && k?.source === NEEDS_SOURCE) err(kw, 'a sourced maize line cannot use needs_source');
+      });
+    }
+    oneOf(`${w} disease.status`, 'status', dr.disease.status, ['no_data', 'available'] as const);
+  }
 }
 
 // ---------- rule 7: respectful framing ----------

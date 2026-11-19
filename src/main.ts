@@ -14,6 +14,9 @@ import { Tracks } from './nations/track';
 import { Clock } from './time/clock';
 import { readHash, syncHash } from './time/url';
 import { NationCard } from './ui/card';
+import { LayerState } from './drivers/groups';
+import { EventLayer } from './drivers/events';
+import { DriverOverlays } from './drivers/overlays';
 import { mountTimebar } from './ui/timebar';
 
 const container = document.getElementById('map') as HTMLDivElement;
@@ -23,6 +26,11 @@ const fieldCanvas = document.getElementById('fields') as HTMLCanvasElement;
 const nationCanvas = document.getElementById('nations') as HTMLCanvasElement;
 const nationSvg = document.getElementById('nation-labels') as unknown as SVGSVGElement;
 const nationLabels = nationSvg.querySelector('g') as SVGGElement;
+const overlayCanvas = document.getElementById('overlays') as HTMLCanvasElement;
+const eventCanvas = document.getElementById('events') as HTMLCanvasElement;
+const driverSvg = document.getElementById('driver-labels') as unknown as SVGSVGElement;
+const overlayLabels = driverSvg.querySelector('.overlay-labels') as SVGGElement;
+const eventLabels = driverSvg.querySelector('.event-labels') as SVGGElement;
 const todayNote = document.getElementById('today-note') as HTMLDivElement;
 const status = document.getElementById('status') as HTMLParagraphElement;
 const counts = document.getElementById('counts') as HTMLSpanElement;
@@ -32,6 +40,9 @@ const tracks = new Tracks(dataset.nations);
 const nations = new NationLayer(tracks, lang);
 const fields = new FieldLayer(tracks, lang);
 const clock = new Clock(readHash());
+const layers = new LayerState();
+const events = new EventLayer(dataset.events, layers);
+const overlays = new DriverOverlays(dataset.drivers, dataset.events, layers);
 
 let projection: GeoProjection | null = null;
 let basemap: Basemap | null = null;
@@ -66,6 +77,8 @@ function renderBase(map: Basemap) {
   if (width < 10 || height < 10) return;
   size = { width, height, dpr: Math.min(window.devicePixelRatio || 1, 3) };
   const narrow = width < 600;
+  events.compact = narrow;
+  overlays.compact = narrow;
   projection = makeProjection(width, height, {
     top: narrow ? 10 : 16,
     right: narrow ? 12 : 20,
@@ -74,12 +87,14 @@ function renderBase(map: Basemap) {
   });
   drawBasemap(sizeCanvas(baseCanvas), projection, map, width, height);
   drawLabels(baseLabels, projection, map, width, height);
-  for (const svg of [nationSvg]) {
+  for (const svg of [nationSvg, driverSvg]) {
     svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
     svg.setAttribute('width', String(width));
     svg.setAttribute('height', String(height));
   }
   sizeCanvas(nationCanvas);
+  sizeCanvas(overlayCanvas);
+  sizeCanvas(eventCanvas);
   // Fields are soft by design; 1x resolution is enough and far cheaper on iPad.
   sizeCanvas(fieldCanvas, 1);
   fields.resize(projection, map, width, height, 1);
@@ -100,12 +115,46 @@ function renderTime() {
     nationLabels.replaceChildren();
     card.hide();
     nations.selected = null;
+    events.selected = null;
+    clearDrivers();
     return;
   }
   fields.draw(fctx, s.year);
   nations.draw(ctx, projection, s.year);
   nations.drawLabels(nationLabels, size.width, size.height);
   if (nations.selected) card.show(nations.selected, s.year);
+  startDrivers();
+}
+
+// ---------- drivers: overlays below the nations, event pulses above ----------
+function clearDrivers() {
+  overlayCanvas.getContext('2d')!.clearRect(0, 0, size.width, size.height);
+  eventCanvas.getContext('2d')!.clearRect(0, 0, size.width, size.height);
+  overlayLabels.replaceChildren();
+  eventLabels.replaceChildren();
+}
+
+function renderDrivers(now: number) {
+  if (!projection || clock.state.mode === 'today') return;
+  clearDrivers();
+  const y = clock.state.year;
+  overlays.draw(overlayCanvas.getContext('2d')!, projection, y, now);
+  overlays.drawLabels(overlayLabels);
+  events.draw(eventCanvas.getContext('2d')!, projection, y, now);
+  events.drawLabels(eventLabels, size.width, size.height);
+}
+
+/** Animate only while something pulses; otherwise draw once and stop. */
+let driverLoop = 0;
+function startDrivers() {
+  if (driverLoop) return;
+  const tick = (now: number) => {
+    renderDrivers(now);
+    const y = clock.state.year;
+    const moving = projection && clock.state.mode !== 'today' && (events.hasActive(projection, y) || overlays.animating(y));
+    driverLoop = moving ? requestAnimationFrame(tick) : 0;
+  };
+  driverLoop = requestAnimationFrame(tick);
 }
 
 const card = new NationCard(
@@ -113,9 +162,31 @@ const card = new NationCard(
   dataset,
   tracks,
   lang,
-  () => { nations.selected = null; card.hide(); renderTime(); },
+  () => clearSelection(),
   (year) => { clock.pause(); clock.seek(year); },
+  (id) => selectNation(id),
 );
+
+function clearSelection() {
+  nations.selected = null;
+  events.selected = null;
+  card.hide();
+  renderTime();
+}
+function selectNation(id: string) {
+  events.selected = null;
+  nations.selected = id;
+  card.show(id, clock.state.year);
+  renderTime();
+}
+function selectEvent(id: string) {
+  const e = dataset.events.find((x) => x.id === id);
+  if (!e) return;
+  nations.selected = null;
+  events.selected = id;
+  card.showEvent(e);
+  renderTime();
+}
 
 // Taps: select the nearest nation, or clear the selection. No hover anywhere.
 let down: { x: number; y: number; id: number } | null = null;
@@ -129,14 +200,17 @@ container.addEventListener('pointerup', (ev) => {
   down = null;
   if (moved > 10 || clock.state.mode === 'today') return;
   const r = container.getBoundingClientRect();
-  const id = nations.hit(ev.clientX - r.left, ev.clientY - r.top);
-  nations.selected = id;
-  if (id) card.show(id, clock.state.year);
-  else card.hide();
-  renderTime();
+  const x = ev.clientX - r.left;
+  const y = ev.clientY - r.top;
+  // Event diamonds sit on top, so they win a tap; their card links to the nations involved.
+  const e = events.hit(x, y);
+  if (e) return selectEvent(e.id);
+  const id = nations.hit(x, y);
+  if (id) selectNation(id);
+  else clearSelection();
 });
 window.addEventListener('keydown', (ev) => {
-  if (ev.key === 'Escape' && nations.selected) { nations.selected = null; card.hide(); renderTime(); }
+  if (ev.key === 'Escape' && (nations.selected || events.selected)) clearSelection();
 });
 
 async function start() {
@@ -152,7 +226,9 @@ async function start() {
   mountLegend(document.getElementById('key')!, {
     fields: fields.enabled,
     onFields: (on) => { fields.enabled = on; renderTime(); },
+    layers,
   });
+  layers.subscribe(() => renderTime());
   let timeFrame = 0;
   clock.subscribe(() => {
     cancelAnimationFrame(timeFrame);
