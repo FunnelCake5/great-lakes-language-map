@@ -317,7 +317,7 @@
    "driver": "french",
    "lat": 43.97,
    "lon": -88.95,
-   "confidence": "med",
+   "confidence": "low",
    "source": "sultzman",
    "actors": [
     "mascouten"

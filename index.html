@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#E6DCC6" />
+    <meta name="description" content="An animated atlas of the Algonquian and Siouan language families across the Great Lakes and Midwest, 900 CE to today." />
+    <title>Great Lakes Language Map</title>
+  </head>
+  <body>
+    <main id="app">
+      <header class="cartouche">
+        <h1>The Great Lakes &amp; the Midwest</h1>
+        <p>Algonquian and Siouan peoples and languages, 900&nbsp;CE to today</p>
+      </header>
+      <div id="map" class="map" role="img" aria-label="Map of the Great Lakes and Midwest">
+        <canvas id="basemap"></canvas>
+        <svg id="labels" aria-hidden="true"></svg>
+        <p id="status" class="status" role="status">Drawing the map…</p>
+      </div>
+      <footer class="colophon">
+        <span id="counts"></span>
+        <span>Basemap: <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a> (public domain) · Albers equal-area conic</span>
+      </footer>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

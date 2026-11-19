@@ -1,0 +1,29 @@
+{
+  "name": "great-lakes-language-map",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "validate": "tsx scripts/validate.ts",
+    "gaps": "tsx scripts/gaps.ts",
+    "basemap": "bash scripts/fetch-basemap.sh",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "d3-geo": "^3.1.2",
+    "d3-scale": "^4.0.3"
+  },
+  "devDependencies": {
+    "@types/d3-geo": "^3.1.1",
+    "@types/d3-scale": "^4.0.9",
+    "@types/geojson": "^7946.0.16",
+    "@types/node": "^26.6.6",
+    "mapshaper": "^0.8.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8"
+  }
+}

@@ -13,11 +13,11 @@ Items that need a source (`needs_source`) or are disputed (`contested`). Fix the
 - event `trail-of-death`: Potawatomi Trail of Death
 - event `miami-removal`: Miami removal from Indiana
 - nation `kickapoo` @ 1819: Cede central Illinois
-- nation `meskwaki` @ 1804: 
+- nation `meskwaki` @ 1804
 - nation `potawatomi` @ 1833: Treaty of Chicago
 - nation `ojibwe` @ 1750: Push into Dakota country (Mille Lacs)
 - nation `miami` @ 1846: Removal
-- nation `dhegiha` @ 1673: 
+- nation `dhegiha` @ 1673
 - nation `dakota` @ 1780: Minnesota River after Ojibwe pressure
 - placename `Michigan`
 - placename `Minnesota`
@@ -38,6 +38,7 @@ Items that need a source (`needs_source`) or are disputed (`contested`). Fix the
 - nation `mascouten`: 6 positions
 - nation `mascouten-wabash`: 4 positions
 - nation `wea`: 2 positions
+- event `allouez-mascouten`: Allouez visits; Mascouten identify as the Assistaeronon
 
 ## Other known gaps
 - Maize-line keyframes: no sourced coordinates yet; render as schematic.
