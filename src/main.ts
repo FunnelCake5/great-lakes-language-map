@@ -6,6 +6,8 @@ import { NEEDS_SOURCE } from './data/types';
 import { drawBasemap, loadBasemap } from './map/basemap';
 import type { Basemap } from './map/basemap';
 import { drawLabels } from './map/labels';
+import { FieldLayer } from './fields/layer';
+import { mountLegend } from './ui/legend';
 import { makeProjection } from './map/projection';
 import { NationLayer } from './nations/layer';
 import { Tracks } from './nations/track';
@@ -17,6 +19,7 @@ import { mountTimebar } from './ui/timebar';
 const container = document.getElementById('map') as HTMLDivElement;
 const baseCanvas = document.getElementById('basemap') as HTMLCanvasElement;
 const baseLabels = document.getElementById('labels') as unknown as SVGSVGElement;
+const fieldCanvas = document.getElementById('fields') as HTMLCanvasElement;
 const nationCanvas = document.getElementById('nations') as HTMLCanvasElement;
 const nationSvg = document.getElementById('nation-labels') as unknown as SVGSVGElement;
 const nationLabels = nationSvg.querySelector('g') as SVGGElement;
@@ -27,9 +30,11 @@ const counts = document.getElementById('counts') as HTMLSpanElement;
 const lang = languageIndex(dataset.languages);
 const tracks = new Tracks(dataset.nations);
 const nations = new NationLayer(tracks, lang);
+const fields = new FieldLayer(tracks, lang);
 const clock = new Clock(readHash());
 
 let projection: GeoProjection | null = null;
+let basemap: Basemap | null = null;
 let size = { width: 0, height: 0, dpr: 1 };
 
 function summarise() {
@@ -44,18 +49,19 @@ function summarise() {
     `${ns.length} nations · ${events.length} events · ${Object.keys(sources).length - 1} sources · ${gaps} data gaps`;
 }
 
-function sizeCanvas(c: HTMLCanvasElement) {
-  c.width = Math.round(size.width * size.dpr);
-  c.height = Math.round(size.height * size.dpr);
+function sizeCanvas(c: HTMLCanvasElement, dpr = size.dpr) {
+  c.width = Math.round(size.width * dpr);
+  c.height = Math.round(size.height * dpr);
   c.style.width = `${size.width}px`;
   c.style.height = `${size.height}px`;
   const ctx = c.getContext('2d')!;
-  ctx.setTransform(size.dpr, 0, 0, size.dpr, 0, 0);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   return ctx;
 }
 
 /** Static layers: only on resize. */
 function renderBase(map: Basemap) {
+  basemap = map;
   const { width, height } = container.getBoundingClientRect();
   if (width < 10 || height < 10) return;
   size = { width, height, dpr: Math.min(window.devicePixelRatio || 1, 3) };
@@ -74,14 +80,19 @@ function renderBase(map: Basemap) {
     svg.setAttribute('height', String(height));
   }
   sizeCanvas(nationCanvas);
+  // Fields are soft by design; 1x resolution is enough and far cheaper on iPad.
+  sizeCanvas(fieldCanvas, 1);
+  fields.resize(projection, map, width, height, 1);
   renderTime();
 }
 
 /** Time-dependent layers: on every clock change. */
 function renderTime() {
-  if (!projection) return;
+  if (!projection || !basemap) return;
   const ctx = nationCanvas.getContext('2d')!;
   ctx.clearRect(0, 0, size.width, size.height);
+  const fctx = fieldCanvas.getContext('2d')!;
+  fctx.clearRect(0, 0, size.width, size.height);
   const s = clock.state;
   const today = s.mode === 'today';
   todayNote.hidden = !today;
@@ -91,6 +102,7 @@ function renderTime() {
     nations.selected = null;
     return;
   }
+  fields.draw(fctx, s.year);
   nations.draw(ctx, projection, s.year);
   nations.drawLabels(nationLabels, size.width, size.height);
   if (nations.selected) card.show(nations.selected, s.year);
@@ -108,7 +120,7 @@ const card = new NationCard(
 // Taps: select the nearest nation, or clear the selection. No hover anywhere.
 let down: { x: number; y: number; id: number } | null = null;
 container.addEventListener('pointerdown', (ev) => {
-  if ((ev.target as HTMLElement).closest('.card')) return;
+  if ((ev.target as HTMLElement).closest('.card, .key')) return;
   down = { x: ev.clientX, y: ev.clientY, id: ev.pointerId };
 });
 container.addEventListener('pointerup', (ev) => {
@@ -137,6 +149,10 @@ async function start() {
     dataset.chapters,
   );
   syncHash(clock);
+  mountLegend(document.getElementById('key')!, {
+    fields: fields.enabled,
+    onFields: (on) => { fields.enabled = on; renderTime(); },
+  });
   let timeFrame = 0;
   clock.subscribe(() => {
     cancelAnimationFrame(timeFrame);
