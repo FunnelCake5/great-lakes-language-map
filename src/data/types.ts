@@ -130,11 +130,14 @@ export interface TodayNation {
   name: string;
   language: string;
   historic?: string[];
-  kind: 'headquarters' | 'reservation' | 'community';
+  kind: 'headquarters' | 'reservation' | 'community' | 'statistical_area' | 'trust_land';
   lat: number;
   lon: number;
   confidence: Confidence;
+  /** Source of the location. */
   source: string;
+  /** Source of the official name, when different. */
+  name_source?: string;
   note?: string;
 }
 export interface TodayFile { note?: string; nations: TodayNation[] }

@@ -154,10 +154,11 @@ export class NationCard {
     this.render([
       h('header', { class: 'card-head' }, h('span', { class: 'card-swatch', style: `background:${swatch}` }), h('h2', {}, n.name)),
       h('p', { class: 'card-lang' }, h('span', { class: 'card-k' }, 'Language '), ...this.langLinks(n.language)),
-      h('p', {}, h('span', { class: 'card-k' }, 'Point marks '), { headquarters: 'the nation’s headquarters', reservation: 'a reservation', community: 'a community' }[n.kind], ' ', badge(n.confidence)),
+      h('p', {}, h('span', { class: 'card-k' }, 'Point marks '), { headquarters: 'the nation’s headquarters', reservation: 'the nation’s reservation or community (Census internal point)', community: 'a community', statistical_area: 'a Census tribal statistical area, not a reservation boundary (internal point)', trust_land: 'off-reservation trust land (Census internal point)' }[n.kind], ' ', badge(n.confidence)),
       historic.length ? h('p', { class: 'card-actors' }, h('span', { class: 'card-k' }, 'On the historical map as '), ...historic) : null,
       n.note ? h('p', { class: 'card-note-text' }, n.note) : null,
-      h('div', { class: 'frame' }, h('div', { class: 'frame-head' }, h('strong', {}, 'Source')), sourceEl(n.source, this.data.sources)),
+      h('div', { class: 'frame' }, h('div', { class: 'frame-head' }, h('strong', {}, 'Location source')), sourceEl(n.source, this.data.sources)),
+      n.name_source ? h('div', { class: 'frame' }, h('div', { class: 'frame-head' }, h('strong', {}, 'Official name')), sourceEl(n.name_source, this.data.sources)) : null,
     ]);
   }
 

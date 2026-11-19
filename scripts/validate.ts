@@ -337,7 +337,7 @@ const todayIds = new Set<string>();
 d.today.forEach((t: any, i) => {
   const w = `today.json nations[${i}]${isStr(t?.id) ? ` (${t.id})` : ''}`;
   if (!isObj(t)) return err(w, 'must be an object');
-  unknownKeys(w, t, ['id', 'name', 'language', 'historic', 'kind', 'lat', 'lon', 'confidence', 'source', 'note']);
+  unknownKeys(w, t, ['id', 'name', 'language', 'historic', 'kind', 'lat', 'lon', 'confidence', 'source', 'name_source', 'note']);
   if (req(w, t, 'id', 'string')) {
     if (todayIds.has(t.id)) err(w, 'duplicate id');
     todayIds.add(t.id);
@@ -348,7 +348,11 @@ d.today.forEach((t: any, i) => {
     if (!Array.isArray(t.historic)) err(w, 'historic must be an array of nation ids');
     else t.historic.forEach((h: unknown) => { if (!isStr(h) || !nationIds.has(h)) err(w, `historic "${h}" is not a nation id`); });
   }
-  oneOf(w, 'kind', t.kind, ['headquarters', 'reservation', 'community'] as const);
+  oneOf(w, 'kind', t.kind, ['headquarters', 'reservation', 'community', 'statistical_area', 'trust_land'] as const);
+  if (t.name_source !== undefined) {
+    sourceRef(`${w}.name_source`, t.name_source);
+    if (t.name_source === NEEDS_SOURCE) err(w, 'name_source must be a real source');
+  }
   coords(w, t);
   oneOf(w, 'confidence', t.confidence, CONFIDENCE);
   sourceRef(w, t.source);

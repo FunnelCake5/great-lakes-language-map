@@ -224,6 +224,12 @@ function clearSelection() {
   renderTime();
 }
 function selectNation(id: string) {
+  // From Today, a link to a historical nation leaves Today at its last recorded position.
+  if (clock.state.mode === 'today') {
+    const frames = tracks.byId.get(id)?.frames.filter((f) => !f.synthetic) ?? [];
+    if (frames.length) clock.seek(frames[frames.length - 1].year);
+    today.selected = null;
+  }
   events.selected = null;
   nations.selected = id;
   card.show(id, clock.state.year);

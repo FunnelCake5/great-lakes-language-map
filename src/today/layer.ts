@@ -11,7 +11,7 @@ const SVG = 'http://www.w3.org/2000/svg';
 const OPACITY: Record<Confidence, number> = { high: 1, med: 0.85, low: 0.6, contested: 0.6 };
 
 type Box = [number, number, number, number];
-type Hit = { kind: 'place' | 'nation'; key: string; box: Box };
+type Hit = { kind: 'place' | 'nation'; key: string; box: Box; point?: [number, number] };
 
 function el<K extends keyof SVGElementTagNameMap>(name: K, attrs: Record<string, string | number>, text?: string) {
   const n = document.createElementNS(SVG, name);
@@ -23,6 +23,12 @@ function el<K extends keyof SVGElementTagNameMap>(name: K, attrs: Record<string,
 /** Show the dataset's wording as-is, with typographic quotes (glosses and descriptions are mixed). */
 export function formatMeaning(m: string): string {
   return m.replace(/'([^']+)'/g, '‘$1’').replace(/'/g, '’');
+}
+
+/** Map label for an official name: up to the first ", ", " of " or " in the State"; the card shows it in full. */
+export function shortName(name: string): string {
+  const cut = name.search(/,| of | in the State| \(/);
+  return cut > 0 ? name.slice(0, cut) : name;
 }
 
 export class TodayLayer {
@@ -69,7 +75,7 @@ export class TodayLayer {
         }
         if (chosen) { withSub = tryWithSub; break; }
       }
-      const grp = el('g', { class: `today-item ${kind}${needs ? ' needs' : ''}${this.selected === key ? ' selected' : ''}`, opacity: OPACITY[conf] });
+      const grp = el('g', { class: `today-item ${kind}${needs ? ' needs' : ''}${this.selected === key ? ' selected' : ''}`, opacity: OPACITY[conf], 'data-key': key });
       grp.append(el('circle', { cx: x, cy: y, r: kind === 'nation' ? 6 : 4.5, fill: colour, stroke: '#F2EBDD', 'stroke-width': 1.5 }));
       if (needs) grp.append(el('circle', { cx: x, cy: y, r: 9, fill: 'none', stroke: '#5C4631', 'stroke-dasharray': '2 2', 'stroke-width': 1.2 }));
       if (chosen) {
@@ -85,7 +91,7 @@ export class TodayLayer {
       }
       nodes.push(grp);
       // Tap target: the point (44px) plus the label box.
-      this.hits.push({ kind, key, box: [x - 22, y - 22, x + 22, y + 22] });
+      this.hits.push({ kind, key, box: [x - 22, y - 22, x + 22, y + 22], point: [x, y] });
       if (chosen) this.hits.push({ kind, key, box });
     };
 
@@ -97,15 +103,24 @@ export class TodayLayer {
       }
     }
     for (const n of this.nations) {
-      item('nation', n.id, n.lon, n.lat, n.name, this.langName(n.language), this.palette.colourOf(n.language), n.confidence, false);
+      item('nation', n.id, n.lon, n.lat, shortName(n.name), this.langName(n.language), this.palette.colourOf(n.language), n.confidence, false);
     }
     g.replaceChildren(...nodes);
   }
 
+  /** Nearest point within 22px (a 44px target) wins; otherwise a label box. */
   hit(x: number, y: number): { kind: Hit['kind']; key: string } | null {
+    let best: Hit | null = null;
+    let bestD = 22;
+    for (const h of this.hits) {
+      if (!h.point) continue;
+      const d = Math.hypot(h.point[0] - x, h.point[1] - y);
+      if (d <= bestD) { bestD = d; best = h; }
+    }
+    if (best) return { kind: best.kind, key: best.key };
     for (let i = this.hits.length - 1; i >= 0; i--) {
-      const { box, kind, key } = this.hits[i];
-      if (x >= box[0] && x <= box[2] && y >= box[1] && y <= box[3]) return { kind, key };
+      const { box, kind, key, point } = this.hits[i];
+      if (!point && x >= box[0] && x <= box[2] && y >= box[1] && y <= box[3]) return { kind, key };
     }
     return null;
   }
