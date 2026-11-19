@@ -21,7 +21,8 @@ const A = FAMILY.algonquian;
 const S = FAMILY.siouan;
 const I = FAMILY.iroquoian;
 
-export function mountLegend(host: HTMLElement, opts: { fields: boolean; onFields: (on: boolean) => void; layers: LayerState }) {
+/** Key and layer toggles, as the content of the side panel's first tab. */
+export function legendContent(opts: { fields: boolean; onFields: (on: boolean) => void; layers: LayerState }): HTMLElement {
   const row = (sym: HTMLElement, label: string) => h('li', {}, sym, h('span', {}, label));
 
   const list = h('ul', { class: 'key-list' },
@@ -70,18 +71,5 @@ export function mountLegend(host: HTMLElement, opts: { fields: boolean; onFields
 
   const note = h('p', { class: 'key-note' }, 'Fields are weighted by confidence. Population weighting waits on sourced figures.');
 
-  const body = h('div', { class: 'key-body', id: 'key-body' }, list, toggle, note, layersEl);
-  const head = h('button', { type: 'button', class: 'key-head', 'aria-expanded': 'true', 'aria-controls': 'key-body' }, 'Key & layers');
-  const setOpen = (open: boolean) => {
-    head.setAttribute('aria-expanded', String(open));
-    body.hidden = !open;
-  };
-  head.addEventListener('click', () => setOpen(head.getAttribute('aria-expanded') !== 'true'));
-  // Open by default where there's room beside the plate; collapse again if
-  // that room goes away (rotation, split view) so it never covers the map.
-  const roomy = window.matchMedia('(min-width: 1100px) and (min-aspect-ratio: 1/1)');
-  setOpen(roomy.matches);
-  roomy.addEventListener('change', () => setOpen(roomy.matches));
-
-  host.replaceChildren(head, body);
+  return h('div', { class: 'key-content' }, list, toggle, note, layersEl);
 }

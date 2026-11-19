@@ -7,7 +7,10 @@ import { drawBasemap, loadBasemap } from './map/basemap';
 import type { Basemap } from './map/basemap';
 import { drawLabels } from './map/labels';
 import { FieldLayer } from './fields/layer';
-import { mountLegend } from './ui/legend';
+import { legendContent } from './ui/legend';
+import { mountPanel } from './ui/panel';
+import { mountTree, nationsUnder } from './ui/tree';
+import { Palette } from './data/palette';
 import { makeProjection } from './map/projection';
 import { NationLayer } from './nations/layer';
 import { Tracks } from './nations/track';
@@ -37,8 +40,9 @@ const counts = document.getElementById('counts') as HTMLSpanElement;
 
 const lang = languageIndex(dataset.languages);
 const tracks = new Tracks(dataset.nations);
-const nations = new NationLayer(tracks, lang);
-const fields = new FieldLayer(tracks, lang);
+const palette = new Palette(lang, dataset.languages, dataset.nations.map((n) => n.language));
+const nations = new NationLayer(tracks, lang, palette);
+const fields = new FieldLayer(tracks, lang, palette);
 const clock = new Clock(readHash());
 const layers = new LayerState();
 const events = new EventLayer(dataset.events, layers);
@@ -165,9 +169,33 @@ const card = new NationCard(
   () => clearSelection(),
   (year) => { clock.pause(); clock.seek(year); },
   (id) => selectNation(id),
+  (id) => focusLanguage(id),
 );
 
+let tree: ReturnType<typeof mountTree> | null = null;
+let panel: ReturnType<typeof mountPanel> | null = null;
+
+/** Language-tree focus: highlight every nation under a node, dim the rest. */
+function focusLanguage(id: string | null) {
+  const node = id ? dataset.languages.find((l) => l.id === id) : undefined;
+  const under = node ? nationsUnder(node.id, dataset.nations, lang) : [];
+  const set = node ? new Set(under.map((n) => n.id)) : null;
+  nations.focus = set;
+  fields.focus = set;
+  tree?.setFocus(node ? node.id : null);
+  if (node) {
+    nations.selected = null;
+    events.selected = null;
+    card.showLanguage(node, under, palette.colourOf(node.id));
+    panel?.open('languages');
+  } else if (card.languageId) {
+    card.hide();
+  }
+  renderTime();
+}
+
 function clearSelection() {
+  if (card.languageId) return focusLanguage(null);
   nations.selected = null;
   events.selected = null;
   card.hide();
@@ -210,7 +238,7 @@ container.addEventListener('pointerup', (ev) => {
   else clearSelection();
 });
 window.addEventListener('keydown', (ev) => {
-  if (ev.key === 'Escape' && (nations.selected || events.selected)) clearSelection();
+  if (ev.key === 'Escape' && (nations.selected || events.selected || card.languageId)) clearSelection();
 });
 
 async function start() {
@@ -223,11 +251,26 @@ async function start() {
     dataset.chapters,
   );
   syncHash(clock);
-  mountLegend(document.getElementById('key')!, {
-    fields: fields.enabled,
-    onFields: (on) => { fields.enabled = on; renderTime(); },
-    layers,
+  tree = mountTree({
+    languages: dataset.languages,
+    nations: dataset.nations,
+    lang,
+    palette,
+    onFocus: (id) => focusLanguage(id),
+    onLevel: (level) => { palette.level = level; renderTime(); },
   });
+  panel = mountPanel(document.getElementById('key')!, [
+    {
+      id: 'key',
+      label: 'Key & layers',
+      content: legendContent({
+        fields: fields.enabled,
+        onFields: (on) => { fields.enabled = on; renderTime(); },
+        layers,
+      }),
+    },
+    { id: 'languages', label: 'Languages', content: tree.element },
+  ]);
   layers.subscribe(() => renderTime());
   let timeFrame = 0;
   clock.subscribe(() => {

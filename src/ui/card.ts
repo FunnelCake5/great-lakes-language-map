@@ -1,6 +1,6 @@
 // Tap card for a nation: who they are, what they speak (via the language
 // tree, rule 6), where they are in the current year and on what evidence.
-import type { Dataset, HistEvent, Source } from '../data/types';
+import type { Dataset, HistEvent, Language, Nation, Source } from '../data/types';
 import { NEEDS_SOURCE } from '../data/types';
 import type { LanguageIndex } from '../data/lang';
 import { FAMILY } from '../theme';
@@ -54,6 +54,7 @@ export class NationCard {
     private onClose: () => void,
     private onSeek: (year: number) => void,
     private onNation: (id: string) => void = () => {},
+    private onLanguage: (id: string) => void = () => {},
   ) {
     const close = h('button', { type: 'button', class: 'card-close', 'aria-label': 'Close' }, '×');
     close.addEventListener('click', () => this.onClose());
@@ -66,6 +67,7 @@ export class NationCard {
     this.el.hidden = true;
     this.shownId = null;
     this.shownEvent = null;
+    this.shownLanguage = null;
   }
 
   private shownEvent: string | null = null;
@@ -73,6 +75,7 @@ export class NationCard {
   /** Event card: title, years, driver, actors, confidence, source (SPEC § Event pulses). */
   showEvent(e: HistEvent) {
     if (this.shownEvent === e.id && !this.el.hidden) return;
+    this.shownLanguage = null;
     this.shownId = null;
     this.shownEvent = e.id;
     const years = e.year_start === e.year_end ? String(e.year_start) : `${e.year_start}–${e.year_end}`;
@@ -106,10 +109,52 @@ export class NationCard {
 
   get eventId() { return this.shownEvent; }
 
+  private shownLanguage: string | null = null;
+  get languageId() { return this.shownLanguage; }
+
+  /** Language card: what the node is, its status and note, and the nations under it. */
+  showLanguage(l: Language, nations: readonly Nation[], swatch: string | null) {
+    this.shownId = null;
+    this.shownEvent = null;
+    this.shownLanguage = l.id;
+    const path = this.lang.path(l.id);
+    const status = {
+      living: 'Living language',
+      revitalizing: 'Revitalizing: being brought back into use',
+      unrecorded: 'Unrecorded: no text survives; placement inferred',
+      extinct: 'No living speakers',
+    }[l.status];
+    const nationButtons = nations.map((n) => {
+      const b = h('button', { type: 'button', class: 'actor' }, n.name);
+      b.addEventListener('click', () => this.onNation(n.id));
+      return b;
+    });
+    const parts: (HTMLElement | null)[] = [
+      h('header', { class: 'card-head' },
+        h('span', { class: 'card-swatch', style: `background:${swatch ?? '#8C7358'}` }),
+        h('h2', {}, l.name)),
+      h('p', { class: 'card-lang' }, h('span', { class: 'card-k' }, path.length > 1 ? `${l.level} in ` : `${l.level}`),
+        ...path.slice(0, -1).flatMap((a, i) => {
+          const b = h('button', { type: 'button', class: 'path-link' }, a.name);
+          b.addEventListener('click', () => this.onLanguage(a.id));
+          return [i ? ' › ' : '', b];
+        })),
+      h('p', {}, h('span', { class: 'card-k' }, 'Status '), status),
+      l.note ? h('p', { class: 'card-note-text' }, l.note) : null,
+      nationButtons.length
+        ? h('p', { class: 'card-actors' }, h('span', { class: 'card-k' }, `Spoken by ${nationButtons.length === 1 ? 'one nation' : `${nationButtons.length} nations`} `), ...nationButtons)
+        : h('p', { class: 'card-note-text' }, 'No nation in the dataset references this language yet.'),
+      h('p', { class: 'key-note' }, 'Highlighted on the map with each nation\'s whole recorded track. Close this card to clear.'),
+    ];
+    this.body.replaceChildren(...parts.filter((x): x is HTMLElement => x !== null));
+    this.el.hidden = false;
+  }
+
   show(id: string, year: number) {
     const y = Math.round(year);
     if (this.shownId === id && this.shownYear === y && !this.el.hidden) return;
     this.shownEvent = null;
+    this.shownLanguage = null;
     const track = this.tracks.byId.get(id);
     if (!track) return this.hide();
     this.shownId = id;
@@ -127,7 +172,11 @@ export class NationCard {
 
     const speaks = h('p', { class: 'card-lang' },
       h('span', { class: 'card-k' }, 'Language '),
-      ...path.flatMap((l, i) => [i ? ' › ' : '', h('span', { class: i === path.length - 1 ? 'lang-leaf' : '' }, l.name)]),
+      ...path.flatMap((l, i) => {
+        const b = h('button', { type: 'button', class: `path-link${i === path.length - 1 ? ' lang-leaf' : ''}` }, l.name);
+        b.addEventListener('click', () => this.onLanguage(l.id));
+        return [i ? ' › ' : '', b];
+      }),
       family === 'iroquoian' ? h('span', { class: 'card-note' }, ' (context only)') : null);
 
     // Other nations that speak the same language (rule 6: several nations, one language).

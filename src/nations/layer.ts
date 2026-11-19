@@ -6,7 +6,9 @@
 import type { GeoProjection } from 'd3-geo';
 import type { Confidence } from '../data/types';
 import type { Family, LanguageIndex } from '../data/lang';
-import { BASEMAP, FAMILY } from '../theme';
+import { BASEMAP } from '../theme';
+import type { Palette } from '../data/palette';
+import { ink } from '../data/palette';
 import type { Sample, Tracks } from './track';
 
 export interface Mark {
@@ -23,7 +25,6 @@ export interface Mark {
 const SVG = 'http://www.w3.org/2000/svg';
 const TRAIL_YEARS = 50;
 
-const colour = (f: Family | undefined) => (f ? FAMILY[f] : BASEMAP.sepiaLight);
 
 function rgba(hex: string, a: number) {
   const n = parseInt(hex.slice(1), 16);
@@ -93,8 +94,39 @@ export class NationLayer {
   private marks: Mark[] = [];
   private labelBoxes: { id: string; box: [number, number, number, number] }[] = [];
   selected: string | null = null;
+  /** Language-tree focus: nations to highlight; everyone else is dimmed. */
+  focus: Set<string> | null = null;
 
-  constructor(private tracks: Tracks, private lang: LanguageIndex) {}
+  constructor(private tracks: Tracks, private lang: LanguageIndex, private palette: Palette) {}
+
+  private colourOf(id: string) {
+    return this.palette.colourOf(this.tracks.byId.get(id)!.nation.language);
+  }
+  private dimmed(id: string) {
+    return this.focus !== null && !this.focus.has(id);
+  }
+
+  /** Whole recorded track of each focused nation ("across all time"). */
+  private drawFocusTracks(ctx: CanvasRenderingContext2D, projection: GeoProjection) {
+    if (!this.focus) return;
+    for (const id of this.focus) {
+      const t = this.tracks.byId.get(id);
+      if (!t || !t.frames.length) continue;
+      const hex = this.colourOf(id);
+      const pts = t.frames.map((f) => projection([f.lon, f.lat])).filter((p): p is [number, number] => !!p);
+      ctx.save();
+      ctx.strokeStyle = rgba(hex, 0.55);
+      ctx.lineWidth = 1.4;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      pts.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = rgba(hex, 0.7);
+      for (const [x, y] of pts) { ctx.beginPath(); ctx.arc(x, y, 2.2, 0, Math.PI * 2); ctx.fill(); }
+      ctx.restore();
+    }
+  }
 
   /** Compute screen positions for the year. */
   layout(projection: GeoProjection, year: number): Mark[] {
@@ -124,16 +156,19 @@ export class NationLayer {
 
   draw(ctx: CanvasRenderingContext2D, projection: GeoProjection, year: number) {
     const marks = this.layout(projection, year);
+    this.drawFocusTracks(ctx, projection);
     for (const m of marks) {
+      ctx.globalAlpha = this.dimmed(m.id) ? 0.15 : 1;
       const pts: [number, number, number][] = [];
       for (const p of this.tracks.trail(m.id, year, TRAIL_YEARS)) {
         const q = projection([p.lon, p.lat]);
         if (q) pts.push([q[0], q[1], p.age]);
       }
-      drawTrail(ctx, pts, colour(m.family), m.sample.confidence);
+      drawTrail(ctx, pts, this.colourOf(m.id), m.sample.confidence);
     }
     for (const m of marks) {
-      const hex = colour(m.family);
+      ctx.globalAlpha = this.dimmed(m.id) ? 0.2 : 1;
+      const hex = this.colourOf(m.id);
       if (m.alt) {
         // Contested: both hypotheses ghosted, joined by a dotted line.
         ctx.save();
@@ -147,6 +182,7 @@ export class NationLayer {
       }
       drawGlyph(ctx, m.x, m.y, m.r, hex, m.sample, this.selected === m.id);
     }
+    ctx.globalAlpha = 1;
   }
 
   /** Small-caps labels with greedy collision avoidance. */
@@ -163,8 +199,10 @@ export class NationLayer {
     // Selected first, then the most certain, so weak marks lose label collisions.
     const rank: Record<Confidence, number> = { contested: 0, low: 1, med: 2, high: 3 };
     const order = [...this.marks].sort((a, b) =>
-      Number(b.id === this.selected) - Number(a.id === this.selected) || rank[b.sample.confidence] - rank[a.sample.confidence]);
-    const label = (id: string, x: number, y: number, r: number, text: string, cls: string, size: number) => {
+      Number(b.id === this.selected) - Number(a.id === this.selected) ||
+      Number(this.dimmed(a.id)) - Number(this.dimmed(b.id)) ||
+      rank[b.sample.confidence] - rank[a.sample.confidence]);
+    const label = (id: string, x: number, y: number, r: number, text: string, cls: string, size: number, fill: string) => {
       const w = text.length * size * 0.66 + 4;
       const h = size + 2;
       const gap = r + 4;
@@ -184,6 +222,8 @@ export class NationLayer {
         t.setAttribute('text-anchor', anchor);
         t.setAttribute('class', cls);
         t.setAttribute('data-id', id);
+        t.style.fill = fill;
+        if (this.dimmed(id)) t.style.opacity = '0.25';
         t.textContent = text;
         nodes.push(t);
         return;
@@ -191,8 +231,9 @@ export class NationLayer {
     };
     for (const m of order) {
       const fam = m.family ?? 'none';
-      label(m.id, m.x, m.y, m.r, m.name, `nation-label fam-${fam} conf-${m.sample.confidence}${m.id === this.selected ? ' selected' : ''}`, 12);
-      if (m.alt) label(m.id, m.alt.x, m.alt.y, m.r, `${m.name}?`, `nation-label alt fam-${fam} conf-contested`, 11);
+      const fill = ink(this.colourOf(m.id));
+      label(m.id, m.x, m.y, m.r, m.name, `nation-label fam-${fam} conf-${m.sample.confidence}${m.id === this.selected ? ' selected' : ''}`, 12, fill);
+      if (m.alt) label(m.id, m.alt.x, m.alt.y, m.r, `${m.name}?`, `nation-label alt fam-${fam} conf-contested`, 11, fill);
     }
     g.replaceChildren(...nodes);
   }
